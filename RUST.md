@@ -7,7 +7,7 @@ These guidelines apply to Anchor programs and any Rust crates that use Solana de
 - Write all code like the latest stable Anchor (currently 1.0.2 but there may be a newer version by the time you read this)
 - Use LiteSVM and Rust tests for new Anchor programs. `anchor init` uses LiteSVM by default.
 - Do not use unnecessary macros that are not needed in the latest stable Anchor
-- Don't implement instruction handlers as methods on account structs. There's no reason to tie state to functions, the function is not modifying the state (if we did like OOP, which we don't), and the functions and structs work without doing this, so there's no reason to add implement instruction handlers as methods on account structs.
+- Don't implement instruction handlers as methods on account structs. There's no reason to tie state to functions, the function is not modifying the state (if we did like OOP, which we don't), and the functions and structs work without doing this, so there's no reason to implement instruction handlers as methods on account structs.
 
 ## Anchor has silly defaults
 
