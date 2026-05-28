@@ -95,7 +95,7 @@ Use these official documentation sources:
 
 - Do not use any documentaton or tools from Project Serum, which collapsed many years ago.
 
-- Do not use yarn. Use npm. Yarn has no reason to exist and only adds unnecessary dependencies. Replace Yarn with npm everywhere you see it. pnpm is also OK.
+- Do not use yarn. Yarn has no reason to exist and only adds unnecessary dependencies and is not commonly used for new JS/TS projects in 2026. Replace Yarn with npm everywhere you see it. Use npm for new projects as it does not require additional dependencies. Keep using pnpm if the project already uses pnpm.
 
 - Do not use **Switchboard Functions** - this product is dead and no longer maintained. (Note: Switchboard oracles are still active and usable.)
 
