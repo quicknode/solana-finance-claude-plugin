@@ -171,7 +171,7 @@ Example:
 ahash = "=0.8.6"
 ```
 
-When you remove a section, only add why to the git commit, so the file is free of information that does not apply to it's existing state.
+When you remove a section, only add why to the git commit, so the file is free of information that does not apply to its existing state.
 
 ### Working with Generated or Unfamiliar Code
 
