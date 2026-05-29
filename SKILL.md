@@ -1,11 +1,29 @@
 ---
 name: solana-anchor-claude-skill
-description: "Use when working on Solana software, including one or more of: Solana client code using TypeScript, Rust libraries that use Solana crates, Anchor programs, including Rust program files, Rust tests using LiteSVM, and Anchor.toml configuration. Designed to create minimal, reusable code without unnecessary duplication."
+description: "Use when working on Solana software, including one or more of: Solana client code using TypeScript, Rust libraries that use Solana crates, Anchor programs, Quasar programs, LiteSVM tests, including Rust program files, TypeScript tests, and Anchor.toml configuration. Designed to create minimal, reusable code without unnecessary duplication."
 ---
 
 # Coding Guidelines
 
 Apply these rules to ensure code quality, maintainability, and adherence to project standards.
+
+## Fight for Truth
+
+Don't write things that aren't currently true — anywhere. Chat, code comments, variable names, PR titles, READMEs, commit messages.
+
+- Documentation and comments that do not match the code are considered untrue.
+- Variable names that do not match the purpose of the variable are considered untrue.
+- Temporary workarounds that aren't labelled as such are lying through omission - there is an issue you aren't telling the next programmer about. Mark them with a `TODO` comment with a link to a git issue (if it exists) and telling the next programmer when they can delete the workaround.
+- If unsure of something, say so. Bluffing is lying.
+- **Ambiguity is a soft lie:** if a phrase could be read two ways and only one is true, it's misleading. Disambiguate before sending — pick the term that says exactly what's meant, name the antecedent of every "it"/"this"/"that".
+- A wrong statement is worse than no statement.
+- Separate scratch labels from real identifiers.
+
+Actively fix untrue things when you see them. Don't let "close enough" wording stand in for the truthful one.
+
+**Grep before naming.** Before sending any prose, walkthrough, README, comment, or commit message that names a specific identifier (function, struct, file, account, module, field, constant), grep the source for that exact identifier and confirm it exists. "I'm pretty sure that's the name" is not enough. If the identifier doesn't exist, either use the real name or apply the rename to the code first, then write the prose.
+
+**Describe what is, not what was removed.** READMEs, doc-comments, and code comments document current state — not history. Lines like "no floats", "no longer uses X", "replaces the previous Y approach" belong in CHANGELOGs and PR descriptions, not source artefacts. A first-time reader has no history and "no longer uses I64F64" creates ambient confusion ("wait, should I be worried?"). Sweep before sending: grep for `no longer`, `removed`, `previously`, `used to`, `formerly`, `dropped`, `now uses`, `replaces the previous` — each hit is a candidate for deletion.
 
 ## Do the whole thing
 
@@ -19,7 +37,7 @@ Ship the complete thing. When the user asks for something, the answer is the fin
 
 ## Success Criteria
 
-- Before declaring success, declaring that work is complete, or celebrating, run `anchor test`. If the tests fail, there is more work to do. Don't stop until `anchor test` passes on the code you have made.
+- Before declaring success, declaring that work is complete, or celebrating, run the project's actual tests using the correct command for that project (for example: `anchor test` for Anchor workspaces, the project's TypeScript test command for TypeScript clients/tests, or `cargo test` for Rust crates). If the tests fail, there is more work to do. Don't stop until the relevant test command passes on the code you have made.
 - Do not write placeholder tests. Placeholder tests don't count as tests, placeholder tests passing does not achieve your task.
   - Tests that just do `assert.ok(true)` or similar are placeholder tests and do not count as tests
   - Tests that do not call the program's instruction handlers are placeholder tests and do not count as tests
@@ -37,12 +55,37 @@ Ship the complete thing. When the user asks for something, the answer is the fin
 Use these official documentation sources:
 
 - **Anchor**: https://www.anchor-lang.com/docs
+- **LiteSVM**: https://www.anchor-lang.com/docs/testing/litesvm
 - **Anchor Error Codes**: https://raw.githubusercontent.com/coral-xyz/anchor/master/lang/src/error.rs
 - **Solana Kite**: https://solanakite.org
 - **Solana Kit**: https://solanakit.com
 - **Agave (Solana CLI)**: https://docs.anza.xyz/ (Anza makes the Solana CLI and Agave).
 - **Switchboard** (if used): https://docs.switchboard.xyz/docs-by-chain/solana-svm
 - **Arcium** (if used): https://docs.arcium.com/developers
+
+## Terminology
+
+- Remember this is Solana not Ethereum. Ethereum is not relevant to any documentation you write. Do not assume people know or care about Ethereum.
+  - Don't tell me about 'smart contracts' or 'protocols' (use 'programs' instead)
+  - Don't tell me about 'gas' (use 'transaction fees' instead)
+  - There are no 'mempools'.
+  - Do not tell me about other things that are not relevant to Solana.
+
+- Token program terminology:
+  - Use 'Token Extensions Program' or 'Token extensions' for the newer token program (not 'Token 2022' which is just a code name)
+  - Use 'Classic Token Program' for the older token program
+  - Use 'Token' rather than 'SPL Token' unless you are specifically discussing the distinction between the native token (SOL) and all other tokens (SPL Tokens)
+
+- Onchain / offchain (one word, no hyphen)
+  - Always write 'onchain' and 'offchain' as single, unhyphenated words — like 'online' and 'offline'.
+  - Never write 'on-chain' or 'off-chain'. The hyphenated forms are wrong.
+  - Apply the same rule to related terms: 'crosschain' (not 'cross-chain'), etc.
+  - Sources:
+    - [Solana Foundation style guide](https://solana.com/docs/references/terminology)
+    - [US Government usage](https://www.sec.gov/files/rules/interp/2026/33-11412.pdf)
+    - [Cat (catmcgee) will make fun of you if you write 'on-chain'](https://x.com/catmcgee/status/2028153588715761825)
+
+- Some tools in Solana unfortunately use the same word 'instructions' for both the input and the functions. To avoid confusion, use 'instruction handlers' for the functions that handle instructions, and 'instructions' for the input to those functions.
 
 ## Do not use
 
@@ -52,7 +95,7 @@ Use these official documentation sources:
 
 - Do not use any documentaton or tools from Project Serum, which collapsed many years ago.
 
-- Do not use yarn. Use npm. Yarn has no reason to exist and only adds unnecessary dependencies. Replace Yarn with npm everywhere you see it.
+- Do not use yarn. Yarn has no reason to exist and only adds unnecessary dependencies and is not commonly used for new JS/TS projects in 2026. Replace Yarn with npm everywhere you see it. Use npm for new projects as it does not require additional dependencies. Keep using pnpm if the project already uses pnpm.
 
 - Do not use **Switchboard Functions** - this product is dead and no longer maintained. (Note: Switchboard oracles are still active and usable.)
 
@@ -74,6 +117,20 @@ Every project must have a `README.md` file in the project root that includes:
 
 Keep the README focused and practical. Avoid generic boilerplate - write documentation that would actually help someone understand and work with this specific project.
 
+## Writing About Financial Software
+
+These apply to READMEs, docs, blog posts, and PR descriptions for finance-related projects (AMMs, escrows, lending, leasing, CLOBs, prediction markets, stablecoins).
+
+- **"Non-custodial" is a loaded word.** If the program locks funds in vaults during its lifecycle (every escrow, lending, AMM, leasing program does), don't claim "non-custodial" — it contradicts itself. What you usually mean is "no admin override, the rules are the deployed bytecode". Say that directly, or just describe the custody arrangement (program-owned vault, PDA signers, no admin escape hatch).
+- **Upgrade authority is normal on Solana** — programs are usually upgradable so authors can ship security fixes. Don't apologise for it or treat it as disqualifying for "trustless" claims. Trust in the author/multisig is baseline; "trustless" means the documented rules can't be bypassed, not "bytecode frozen forever".
+- **"Token" not "mint" in economic prose.** A mint is the onchain account that controls supply; a token is the asset. In economic descriptions ("post token A as collateral, borrow token B"), say "token A" and "token B". Reserve "mint account" for technical descriptions of what gets passed to instructions.
+- **Tokens are fungible by default — don't say so.** Don't write "fungible token" or sentences explaining that tokens are fungible. The reader knows. Only qualify when contrasting ("non-fungible token" / NFT). Same rule as not explaining what an integer is.
+- **One name per role/concept, enforced everywhere.** Pick a single term for each party (lessor/lessee, maker/taker, long/short, borrower/lender) and use ONLY that term throughout. Mixing terminology mid-document is how readers lose track of who owes what to whom.
+- **Don't conflate "long the collateral" with "long the trade".** Anyone who posts collateral wants it to hold value (otherwise margin call), so every borrower is long their collateral. The directional bet is on the _borrowed_ asset, separately. Be precise about which "long" you mean.
+- **Be careful with the word "securities".** It's a legal term. SOL is not a security. Asset-leasing is not "securities lending" even when the mechanics are analogous. Prefer "asset lending", "token lending", or "directional token lending" — and ask before picking one.
+- **Spell out two-asset flows with concrete examples.** "Posts collateral and takes delivery of borrowed tokens" reads circular. "Posts USDC as collateral, borrows NVDAx" makes the asymmetry obvious. Don't make the reader infer that mints A and B are different things.
+- **Name the instruction handlers in lifecycle prose.** When walking through "what the user does" (open position, close position, liquidate), name the actual handler (`take_lease`, `return_lease`, `liquidate`). Plain-English mechanics without handler names leave the reader unable to connect the narrative to the code.
+
 ## General Coding Guidelines
 
 ### You are a deletionist
@@ -83,7 +140,11 @@ Your golden rule is "perfection isn't achieved when there's nothing more to add,
 Remove:
 
 - Comments that simply repeat what the code is doing, or the name of a variable, and do not add further insight.
-- Repeated code that should be turned into a named function
+- Repeated code that should be turned into a named function.
+- Unused imports, unused constants, unused files, and comments that no longer apply.
+- Doc-comments whose first line just paraphrases the identifier. `/// Pool authority PDA.` above `pub pool_authority` is noise. Either explain something the name doesn't (seed derivation, mutability rationale, type-choice reason, an invariant the reader can't see from the type) or delete the line.
+
+Don't remove existing comments unless they are no longer useful or accurate.
 
 ### Communication Style
 
@@ -91,6 +152,26 @@ Remove:
 - It is expected that work is complete and functional - no need to state this explicitly
 - Avoid phrases like "This is a complete implementation" or "All features are working"
 - Just deliver the work without meta-commentary about its completeness
+
+### Config files: leave a comment explaining WHY
+
+When you change a configuration value, or pin a version in any config file (`Anchor.toml`, `Cargo.toml`, `package.json`, CI workflows, `.gitignore`, `rust-toolchain.toml`), leave a comment explaining _why_. The next reader needs the rationale, not just the value.
+
+- **Pinned versions:** what breaks without the pin? when can it be unpinned?
+- **Non-default timeouts / limits:** why this number?
+- **Removed sections:** what was it doing? why was it removed?
+- **`.gitignore` exceptions:** why is this file tracked despite the rule?
+- **Workarounds:** what's the proper fix? when can this be replaced? (mark with `TODO`)
+
+Example:
+
+```toml
+# Pinned: 0.8.7 conflicts with litesvm's dep tree.
+# Unpin when litesvm upgrades its ahash requirement.
+ahash = "=0.8.6"
+```
+
+When you remove a section, only add why to the git commit, so the file is free of information that does not apply to its existing state.
 
 ### Working with Generated or Unfamiliar Code
 
@@ -101,13 +182,6 @@ Remove:
 - Don't invent convenience parameters that don't exist
 - Generated code, third-party libraries, and unfamiliar codebases often have different APIs than you expect
 - Common mistake: Assuming a function accepts high-level parameters → WRONG. Check the actual signature in the source files first
-
-### Code Honesty and Clarity
-
-- It's important not to deceive anyone reading this code. Deception includes:
-  - Variable names that do not match the purpose of the variable
-  - Comments that no longer describe the code or are otherwise inaccurate
-  - Temporary workarounds that aren't labelled as such using a comment (with a `TODO` letting the next programmer know when they can delete the workaround)
 
 ### Variable Naming
 
@@ -137,7 +211,6 @@ You can still add comments for additional context, just be careful to avoid comm
 
 ### Code Quality
 
-- Look out for repeated code that should be turned into functions
 - Avoid 'magic numbers'. Make numbers either have a good variable name, a comment explaining why they are that value, or a reference to the URL you got the value from. If the values come from an IDL, download the IDL, import it, and make a function that gets the value from the IDL rather than copying the value into the source code
 
 This is a magic number. Don't do this:
@@ -158,206 +231,15 @@ const FINALIZE_EVENT_DISCRIMINATOR = getEventDiscriminator(
 ```
 
 - The code you are making is for production. You shouldn't have comments like `// In production we'd do this differently` or `**Implementation incomplete** - Needs program config handling and proper PDA derivations` or `**WORK IN PROGRESS**` in the final code you produce, or functions that return placeholder data. Instead: do the fucking work.
-- Don't remove existing comments unless they are no longer useful or accurate
-- Delete unused imports, unused constants, unused files and comments that no longer apply
 
-## TypeScript Guidelines
+## Language-Specific Guidelines
 
-These guidelines apply to browser code, scripts, offchain client code, and any other places where TypeScript is used in the project. Anchor programs (since 1.0.0) use Rust + LiteSVM instead of TypeScript — see the **Testing (Rust + LiteSVM)** section under the Rust guidelines.
+The rules above apply to every file in the project. In addition, read the file that matches the language you are editing:
 
-### General TypeScript
+- **TypeScript** (Solana Kit clients, Solana Kit tests, browser code, anything `.ts`): see [TYPESCRIPT.md](TYPESCRIPT.md)
+- **Rust** (Anchor programs, LiteSVM tests, Solana crates, anything `.rs`): see [RUST.md](RUST.md)
 
-Use `type: module` in `package.json` files.
-
-Avoid using a `tsconfig.json` unless it's needed, as we use `tsx` to run most typescript and it doesn't usually need one. If you do need a `tsconfig.json`, state why at the top of the file, and you can use the most modern version of ECMAScript/JavaScript you want - up to say 2023.
-
-### Async/await
-
-Favor `async`/`await` and `try/catch` over `.then()` or `.catch()` or using callbacks for flow control. `tsx` has top level `await` so you don't need to wrap top level `await` in IIFEs.
-
-### Type System
-
-- **Always use `Array<item>`**, never use `item[]` for consistency with other generic syntax like `Promise<T>`, `Map<K, V>`, and `Set<T>`
-- **Don't use `any`**
-
-### Comments
-
-- Most comments should use `//` and be above (not beside) the code
-- The only exception is JSDoc/TSDoc comments which MUST use `/* */` syntax
-
-### Solana-Specific TypeScript
-
-- Don't make new `@solana/web3.js` version 1 code. Do not make new code using `@coral-xyz/anchor` package. Don't replace Solana Kit with web3.js version 1 code. web3.js version 1 is legacy and should be eventually removed. Solana Kit used to be called web3.js version 2. Use Solana Kit, preferably via Solana Kite.
-- Use Kite's `connection.getPDAAndBump()` to turn seeds into PDAs and bumps
-- There is no need to use offsets that you set to decode Solana account data - either download an npm package for the program like `@solana-program/token` for the token program or make one using Codama.
-- In Solana Kit, you make instructions by making TS clients from IDLs using Codama. You can easily make Codama clients for installed IDLs using:
-
-`npx create-codama-clients`
-
-- Do not use the `bs58` npm package.
-
-Don't do this:
-
-```typescript
-import bs58 from "bs58";
-const signature = bs58.encode(signatureBytes);
-```
-
-Do this instead:
-
-```typescript
-import { getBase58Decoder } from "@solana/codecs";
-const signature = getBase58Decoder().decode(signatureBytes);
-```
-
-Yes, `bs58` and `@solana/codecs` packages have different concepts of 'encode' and 'decode'.
-
-### Thrown object handling
-
-- JavaScript allows arbitrary items - strings, array, numbers etc to be 'thrown'. However you can assume that any non-Error item that is thrown is an programmer error. Handle it like this (including the comment since most TypeScript developers don't know this):
-
-```ts
-// In JS it's possible to throw *anything*. A sensible programmer
-// will only throw Errors but we must still check to satisfy
-// TypeScript (and flag any craziness)
-const ensureError = function (thrownObject: unknown): Error {
-  if (thrownObject instanceof Error) {
-    return thrownObject;
-  }
-  return new Error(`Non-Error thrown: ${String(thrownObject)}`);
-};
-```
-
-and
-
-```ts
-try {
-  // some code that might throw
-} catch (thrownObject) {
-  const error = ensureError(thrownObject);
-  throw error;
-}
-```
-
-## Rust Guidelines (Anchor Programs)
-
-### Terminology
-
-- Remember this is Solana not Ethereum. Ethereum is not relevant to any documentation you write. Do not assume people know or care about Ethereum.
-  - Don't tell me about 'smart contracts' or 'protocols' (use 'programs' instead)
-  - Don't tell me about 'gas' (use 'transaction fees' instead)
-  - There are no 'mempools'.
-
-- Token program terminology:
-  - Use 'Token Extensions Program' or 'Token extensions' for the newer token program (not 'Token 2022' which is just a code name)
-  - Use 'Classic Token Program' for the older token program
-
-- Onchain / offchain (one word, no hyphen)
-  - Always write 'onchain' and 'offchain' as single, unhyphenated words — like 'online' and 'offline'.
-  - Never write 'on-chain' or 'off-chain'. The hyphenated forms are wrong.
-  - Apply the same rule to related terms: 'crosschain' (not 'cross-chain'), etc.
-  - Sources:
-    - [Solana Foundation style guide](https://solana.com/docs/references/terminology)
-    - [US Government usage](https://www.sec.gov/files/rules/interp/2026/33-11412.pdf)
-    - [Cat (catmcgee) will make fun of you if you write 'on-chain'](https://x.com/catmcgee/status/2028153588715761825)
-
-- Some tools in Solana unfortunately use the same word 'instructions' for both the input and the functions. To avoid confusion, use 'instruction handlers' for the functions that handle instructions, and 'instructions' for the input to those functions.
-
-### Anchor Version
-
-- Write all code like the latest stable Anchor (currently 0.32.1 but there may be a newer version by the time you read this)
-- Do not use unnecessary macros that are not needed in the latest stable Anchor
-
-### Anchor has silly defaults
-
-Every project will need an IDL.
-
-```toml
-[features]
-idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
-```
-
-and if it uses SPL Tokens (like almost every Anchor project) it will need this dependency (insert whatever version is applicable):
-
-```toml
-[dependencies]
-anchor-spl = "0.32.1"
-```
-
-### Project Structure
-
-- **Never modify the program ID** in `lib.rs` or `Anchor.toml` when making changes
-- Create files inside the `state` folder for whatever state is needed
-- Create files inside the `instructions` or `handlers` folders (whichever exists) for whatever instruction handlers are needed
-- Put Account Constraints in instruction files, but ensure the names end with `AccountConstraints` rather than just naming them the same thing as the function
-- Handlers that are only for the admin should be in a new folder called `admin` inside whichever parent folder exists (`instructions/admin/` or `handlers/admin/`)
-
-### Account Constraints
-
-- Use a newline after each key in the account constraints struct, so the macro and the matching key/value have some space from other macros and their matching key/value
-
-### Bumps
-
-- Use `context.bumps.foo` not `context.bumps.get("foo").unwrap()` - the latter is outdated
-
-### Data Structures
-
-- When making structs ensure strings and Vectors have a `max_len` attribute
-- Vectors have two numbers for `max_len`: the first is the max length of the vector, the second is the max length of the items in the vector
-
-### Space Calculation (CRITICAL - NO MAGIC NUMBERS)
-
-- **Do not use magic numbers anywhere**. I don't want to see `8 + 32` or whatever.
-- **Do not make constants for the sizes of various data structures**
-- For `space`, use syntax like: `space = SomeStruct::DISCRIMINATOR.len() + SomeStruct::INIT_SPACE,`
-- All structs should have `#[derive(InitSpace)]` added to them, to get the `INIT_SPACE` trait
-- **DO NOT use magic numbers**
-
-**Example:**
-
-```rust
-#[derive(InitSpace)]
-#[account]
-pub struct UserProfile {
-    pub authority: Pubkey,
-
-    #[max_len(50)]
-    pub username: String,
-
-    pub bump: u8,
-}
-
-#[derive(Accounts)]
-pub struct InitializeProfile<'info> {
-    #[account(
-        init,
-        payer = authority,
-        space = UserProfile::DISCRIMINATOR.len() + UserProfile::INIT_SPACE,
-        seeds = [b"profile", authority.key().as_ref()],
-        bump
-    )]
-    pub profile: Account<'info, UserProfile>,
-
-    #[account(mut)]
-    pub authority: Signer<'info>,
-
-    pub system_program: Program<'info, System>,
-}
-```
-
-### Error Handling
-
-- Return useful error messages
-- Write code to handle common errors like insufficient funds, bad values for parameters, and other obvious situations
-
-### PDA Management
-
-- Add `pub bump: u8` to every struct stored in PDA
-- Save the bumps inside each when the struct inside the PDA is created
-
-### System Functions
-
-- When you get the time via Clock, use `Clock::get()?;` rather than `anchor_lang::solana_program::clock`
+If a task touches both sides, read both.
 
 ### Testing (Rust + LiteSVM)
 
