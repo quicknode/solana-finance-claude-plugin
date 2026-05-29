@@ -5,10 +5,11 @@ A Claude Code skill for creating and editing Solana projects, including Rust/Anc
 - Maintainability
 - Readability
 - Minimal code
+- Financial maths
 - 2026 best practices
 
 > [!TIP]
-> This skill has the **most stars of any Solana Claude skill** not produced by the Solana Foundation (which inherently get more distribution) and is made by someone working in the software industry for more than 25 years. If you find it useful, please add a GitHub star above! 🙏 
+> This skill has the **most stars of any Solana Claude skill** not produced by the Solana Foundation (which inherently get more distribution) and is made by someone working in the software industry for more than 25 years, based on code used by some of the largest programs on Solana. If you find it useful, please add a GitHub star above! 🙏 
 
 ## Sponsor shout out
 
@@ -21,7 +22,7 @@ Claude Code supports "skills" - reusable instruction sets that Claude automatica
 ## Installation
 
 ```bash
-npx skills add https://github.com/quiknode-labs/solana-anchor-claude-skill
+npx skills add https://github.com/quicknode/solana-anchor-claude-skill
 ```
 
 This automatically installs the skill to your Claude Code skills directory (`~/.claude/skills/`).
