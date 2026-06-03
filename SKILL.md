@@ -249,7 +249,8 @@ const FINALIZE_EVENT_DISCRIMINATOR = getEventDiscriminator(
 The rules above apply to every file in the project. In addition, read the file that matches the language you are editing:
 
 - **TypeScript** (Solana Kit clients, Solana Kit tests, browser code, anything `.ts`): see [TYPESCRIPT.md](TYPESCRIPT.md)
-- **Rust** (Anchor programs, LiteSVM tests, Solana crates, anything `.rs`): see [RUST.md](RUST.md)
+- **Rust — Anchor** (Anchor programs, LiteSVM tests, Solana crates, `.rs` files using `anchor_lang`): see [RUST.md](RUST.md)
+- **Rust — Quasar** (`.rs` files using `quasar_lang`/`quasar_spl`): see [QUASAR.md](QUASAR.md), then RUST.md for the shared Rust and onchain-math rules
 
 If a task touches both sides, read both.
 
