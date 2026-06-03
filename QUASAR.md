@@ -108,6 +108,8 @@ solana-instruction = { version = "3.2.0", features = ["bincode"] }
 solana-pubkey = "4.1.0"
 ```
 
+At the time this skill was produced (June 2026), Quasar is generally installed from git rather than from crates.io — hence the `git = "..."` dependency above. The `solana-*` crates are versioned independently of each other (per-crate semver), so the differing major versions are expected.
+
 The basic test shape:
 
 ```rust
