@@ -15,11 +15,15 @@ Anchor-specific rules. Read these alongside the general rules in [SKILL.md](SKIL
 
 ## Anchor has silly defaults
 
-Every project will need an IDL, and al,ost every project will use tokens, so ensure that features are correct...
+Every project will need an IDL, and almost every project will use tokens, so ensure the features and dependencies are correct (insert whatever versions are applicable):
 
 ```toml
 [features]
 idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+
+[dependencies]
+anchor-spl = "1.0.2"
+```
 
 ## Token program compatibility
 
