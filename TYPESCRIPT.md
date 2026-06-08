@@ -17,6 +17,30 @@ Favor `async`/`await` and `try/catch` over `.then()` or `.catch()` or using call
 - **Always use `Array<item>`**, never use `item[]` for consistency with other generic syntax like `Promise<T>`, `Map<K, V>`, and `Set<T>`
 - **Don't use `any`**
 
+## Naming
+
+Name things consistently so that a function, its return type, and the variable that holds the result all share one vocabulary. A reader should be able to predict any one of them from the others.
+
+- Name a variable after the type it holds, not a vague shortening of it:
+
+```typescript
+// Don't: the method and type say "token metadata", the variable says "metadata"
+const metadata = await client.getTokenMetadata(mint);
+// Do:
+const tokenMetadata = await client.getTokenMetadata(mint);
+```
+
+- Name a function after what it returns. If a method returns a `PythPriceFeed` (a feed bundling the spot price and the EMA price), it is `getPythPriceFeed()` — not `getPythPrice()` — and the result is a `priceFeed`:
+
+```typescript
+// Don't: "getPythPrice" returns a feed, so the name lies about the value
+const feed = await client.pyth.getPythPrice(feedId);
+// Do: the name, the return type, and the variable all agree
+const priceFeed = await client.pyth.getPythPriceFeed(feedId);
+```
+
+If a method should really return just a price, then make it return a price — but never let the name and the return type disagree.
+
 ## Comments
 
 - Most comments should use `//` and be above (not beside) the code
