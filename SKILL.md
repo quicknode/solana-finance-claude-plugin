@@ -63,6 +63,69 @@ Use these official documentation sources:
 - **Agave (Solana CLI)**: https://docs.anza.xyz/ (Anza makes the Solana CLI and Agave).
 - **Switchboard** (if used): https://docs.switchboard.xyz/docs-by-chain/solana-svm
 - **Arcium** (if used): https://docs.arcium.com/developers
+- **Program Examples**: https://github.com/solana-developers/program-examples - Reference implementations for common Solana patterns
+
+## Program Examples
+
+The [solana-developers/program-examples](https://github.com/solana-developers/program-examples) repository contains reference implementations for common Solana patterns. Use these when building similar functionality rather than implementing from scratch.
+
+### Basics
+
+- [account-data](https://github.com/solana-developers/program-examples/tree/main/basics/account-data) - Storing structured data in an account (Native, Anchor)
+- [checking-accounts](https://github.com/solana-developers/program-examples/tree/main/basics/checking-accounts) - Account validation from a security perspective (Native, Anchor)
+- [close-account](https://github.com/solana-developers/program-examples/tree/main/basics/close-account) - Closing accounts and reclaiming rent (Native, Anchor)
+- [counter](https://github.com/solana-developers/program-examples/tree/main/basics/counter) - Simple counter across multiple frameworks (Native, Anchor, mpl-stack)
+- [create-account](https://github.com/solana-developers/program-examples/tree/main/basics/create-account) - Creating system accounts from within a program (Native, Anchor)
+- [cross-program-invocation](https://github.com/solana-developers/program-examples/tree/main/basics/cross-program-invocation) - Calling another program via CPI (Native, Anchor)
+- [favorites](https://github.com/solana-developers/program-examples/tree/main/basics/favorites) - Storing per-user preferences in a PDA (Native, Anchor, Pinocchio)
+- [hello-solana](https://github.com/solana-developers/program-examples/tree/main/basics/hello-solana) - Minimal hello-world program (Native, Anchor)
+- [pda-rent-payer](https://github.com/solana-developers/program-examples/tree/main/basics/pda-rent-payer) - Using a PDA's lamports to pay for account creation (Native, Anchor)
+- [processing-instructions](https://github.com/solana-developers/program-examples/tree/main/basics/processing-instructions) - Deserializing and handling instruction data (Native, Anchor)
+- [program-derived-addresses](https://github.com/solana-developers/program-examples/tree/main/basics/program-derived-addresses) - Using seeds to store data in a PDA (Native, Anchor)
+- [realloc](https://github.com/solana-developers/program-examples/tree/main/basics/realloc) - Resizing existing accounts (Native, Anchor)
+- [rent](https://github.com/solana-developers/program-examples/tree/main/basics/rent) - Calculating rent requirements (Native, Anchor)
+- [repository-layout](https://github.com/solana-developers/program-examples/tree/main/basics/repository-layout) - Recommended project structure (Native, Anchor)
+- [transfer-sol](https://github.com/solana-developers/program-examples/tree/main/basics/transfer-sol) - Transferring SOL from system accounts and PDAs (Native, Anchor, Seahorse)
+
+### Tokens
+
+- [create-token](https://github.com/solana-developers/program-examples/tree/main/tokens/create-token) - Creating a token with Metaplex metadata (Anchor, Native)
+- [escrow](https://github.com/solana-developers/program-examples/tree/main/tokens/escrow) - Token escrow for trustless swaps (Anchor, Native)
+- [nft-minter](https://github.com/solana-developers/program-examples/tree/main/tokens/nft-minter) - Minting an NFT and removing mint authority (Anchor, Native)
+- [nft-operations](https://github.com/solana-developers/program-examples/tree/main/tokens/nft-operations) - Common NFT operations (Anchor)
+- [pda-mint-authority](https://github.com/solana-developers/program-examples/tree/main/tokens/pda-mint-authority) - Minting tokens from within a program using a PDA (Anchor, Native)
+- [spl-token-minter](https://github.com/solana-developers/program-examples/tree/main/tokens/spl-token-minter) - Using associated token accounts (Anchor, Native)
+- [token-fundraiser](https://github.com/solana-developers/program-examples/tree/main/tokens/token-fundraiser) - Crowdfunding campaign using tokens (Anchor)
+- [token-swap](https://github.com/solana-developers/program-examples/tree/main/tokens/token-swap) - AMM pool for token swaps (Anchor)
+- [transfer-tokens](https://github.com/solana-developers/program-examples/tree/main/tokens/transfer-tokens) - Transferring tokens via CPI into the token program (Anchor, Native)
+
+### Token Extensions
+
+- [basics](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/basics) - Creating, minting, and transferring extension tokens (Anchor)
+- [cpi-guard](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/cpi-guard) - Restricting CPI transfers from token accounts (Anchor)
+- [default-account-state](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/default-account-state) - Creating token accounts with a preset state such as frozen (Anchor, Native)
+- [group](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/group) - Grouping related tokens together (Anchor)
+- [immutable-owner](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/immutable-owner) - Preventing owner reassignment on token accounts (Anchor)
+- [interest-bearing](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/interest-bearing) - Tokens that accrue interest over time (Anchor)
+- [memo-transfer](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/memo-transfer) - Requiring a memo on every transfer (Anchor)
+- [metadata](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/metadata) - Storing metadata directly on the mint account (Anchor)
+- [mint-close-authority](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/mint-close-authority) - Closing mint accounts to reclaim rent (Anchor, Native)
+- [multiple-extensions](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/multiple-extensions) - Combining multiple extensions on a single mint (Native)
+- [nft-meta-data-pointer](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/nft-meta-data-pointer) - NFTs with dynamic onchain metadata via metadata pointer (Anchor)
+- [non-transferable](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/non-transferable) - Soulbound tokens for achievements or referral programs (Anchor, Native)
+- [permanent-delegate](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/permanent-delegate) - Irrevocable delegation over a token account (Anchor)
+- [transfer-fee](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/transfer-fee) - Withholding a fee on every transfer (Anchor, Native)
+- [transfer-hook](https://github.com/solana-developers/program-examples/tree/main/tokens/token-2022/transfer-hook) - Custom logic invoked on every transfer via CPI (Anchor)
+
+### Compression
+
+- [cnft-burn](https://github.com/solana-developers/program-examples/tree/main/compression/cnft-burn) - Burning compressed NFTs (Anchor)
+- [cnft-vault](https://github.com/solana-developers/program-examples/tree/main/compression/cnft-vault) - Vault for locking and releasing compressed NFTs (Anchor)
+- [cutils](https://github.com/solana-developers/program-examples/tree/main/compression/cutils) - Utility helpers for state compression (Anchor)
+
+### Oracles
+
+- [pyth](https://github.com/solana-developers/program-examples/tree/main/oracles/pyth) - Reading Pyth price feeds in a program (Anchor, Native)
 
 ## Terminology
 
