@@ -187,7 +187,7 @@ The `anchor init` scaffold above is already the minimal pattern — `litesvm` pl
 
 ### Optional ergonomic helpers via solana-kite
 
-[`solana-kite`](https://crates.io/crates/solana-kite) is an optional thin layer on top of `litesvm` that removes most of the manual transaction wiring. Used in the wild by [`quiknode-labs/solana-program-examples/basics/counter/anchor`](https://github.com/quiknode-labs/solana-program-examples/tree/main/basics/counter/anchor).
+[`solana-kite`](https://crates.io/crates/solana-kite) is an optional thin layer on top of `litesvm` that removes most of the manual transaction wiring. Used in the wild by [`quicknode/solana-program-examples/basics/counter/anchor`](https://github.com/quicknode/solana-program-examples/tree/main/basics/counter/anchor).
 
 Add to `[dev-dependencies]`:
 
