@@ -26,6 +26,9 @@ If a task touches more than one, read each.
 
 - Return useful error messages
 - Write code to handle common errors like insufficient funds, bad values for parameters, and other obvious situations
+- **Bounds-check client-supplied lengths and indices before slicing.** `split_at`, `copy_from_slice`, and indexing panic on out-of-range input; an attacker-controlled length must be `require!`d against the actual slice length first so the program returns a clean error instead of aborting.
+- **Use a named error enum, not `ProgramError::Custom(4)`.** Bare numeric custom errors are magic numbers; the client can't tell what failed.
+- **Never accept a parameter and ignore it.** A handler that takes `decimals: u8` and then hardcodes `9` silently gives the caller something different from what they asked for. Either use the parameter or remove it from the signature.
 - All arithmetic in onchain code is `checked_*` — never raw `+ - * /`. Solana's BPF doesn't trap on overflow in release builds; silent wraps are how hacks happen. `checked_*` returns `Option`; force the error with `.ok_or(MyError::MathOverflow)?`. Reserve `saturating_*` for cosmetic/UX display values, never for balances.
 
 ## Onchain Financial Math
@@ -44,7 +47,9 @@ Applies to any code touching money, balances, prices, shares, fees, or token amo
 - **Oracle/price freshness is part of the math.** Check `last_updated_slot` and reject if older than N slots. A stale price means the calculation is wrong.
 - **Checks-effects-interactions.** Update state before the token transfer CPI, not after.
 - **Treat client-supplied values as adversarial.** If a handler takes `(amount_a, amount_b)`, verify each against onchain state, not against each other.
-- **Test the branch the bug lives in.** Standard AMM/lending bugs sit in the _non-empty pool_, _post-swap_, _post-fee_, _rounding-edge_ branches. The happy path almost always works. Write the test that exercises the branch where the bug actually lives.
+- **Test the branch the bug lives in.** Standard AMM/lending bugs sit in the _non-empty pool_, _post-swap_, _post-fee_, _rounding-edge_ branches. The happy path almost always works. Write the test that exercises the branch where the bug actually lives. In particular, test *both directions* of any symmetric flow: a swap suite that only ever trades A→B will never catch a wrong-variable bug in the B→A branch.
+- **One whole token is `10u64.pow(decimals)` base units.** `1u64.pow(decimals)` is always 1, and `n.pow(decimals)` is n^decimals, not n whole tokens — both are real shipped bugs. n whole tokens is `n * 10u64.pow(decimals)`, with `checked_mul`.
+- **Time windows: write the comparison in words first, then test with a nonzero duration.** "Contributions are allowed while `now < start + duration`" — code exactly that sentence. Inverted deadline comparisons (`duration <= elapsed` where `elapsed < duration` was meant) ship to mainnet because the tests use `duration: 0`, where both directions degenerate to equality. Every deadline needs a test that warps the clock past the boundary and one that stays inside it.
 - **LP shares use different formulas for first deposit vs subsequent.** First deposit: shares = `sqrt(amount_a * amount_b)` (geometric mean bootstraps the pool). Subsequent deposits: shares = `min(amount_a * supply / reserve_a, amount_b * supply / reserve_b)` (proportional to share-of-pool). Using the geometric mean for every deposit is a real, repeated bug — test both branches separately.
 - **For integer sqrt, hand-code Newton's method on `u128`** (~15 lines, as Uniswap V2 in Solidity / Saber in Rust do). Don't reach for a fixed-point crate for one sqrt.
 - **Slippage protection: accept a `min_output_*` from the user and verify before the CPI.** Swaps, deposits, and withdraws all need it. Without it, sandwich attackers steal value across the price gap they create.
@@ -58,6 +63,7 @@ Applies to any code touching money, balances, prices, shares, fees, or token amo
 
 - **Every escrow needs a cancel/withdraw instruction.** An escrow with no cancel locks abandoned offers forever — funds become unrecoverable when the counterparty disappears. The cancel must be callable by the maker (and only the maker) at any time before the trade settles.
 - **Don't lazily create an account the wrong party would pay rent for.** Common bug: the taker's instruction lazily creates the maker's destination ATA (e.g. via Anchor's `init_if_needed`), so the taker pays the maker's rent. Either require the maker to pre-create their ATA or pass the rent payer explicitly.
+- **Close accounts to whoever paid their rent.** The mirror image of the bullet above: when the taker settles an offer, the offer account and vault rent were paid by the maker, so `close = maker` — not `close = taker`, and never a caller-chosen unchecked account. When closing manually, move *all* lamports; leaving `minimum_balance` behind strands it forever at a PDA nobody can sign for.
 - **Update state before the CPI.** Already in the list above, but worth repeating in the vault context: write the new balance/share count first, then transfer. A CPI that re-enters (rare on Solana but possible via callbacks) sees current state, not stale state.
 
 **Pattern to copy when ratio-clamping (Uniswap V2 style):**
@@ -85,6 +91,15 @@ let (final_a, final_b) = if amount_b_required <= amount_b_u128 {
 let final_a: u64 = final_a.try_into().map_err(|_| ErrorCode::MathOverflow)?;
 let final_b: u64 = final_b.try_into().map_err(|_| ErrorCode::MathOverflow)?;
 ```
+
+### Pre-signed Message Authorization
+
+If a handler accepts an offchain signature (ed25519, secp256k1 "sign in with Ethereum", session keys) as authorization, the signed message must commit to everything the signature authorizes:
+
+- The message the program verifies must be reconstructed *onchain* from the program ID, the specific action, the amount, the recipient, and a nonce stored in program state — never accepted as an opaque client-supplied hash.
+- Increment the stored nonce after each successful use, so a signature authorizes exactly one execution.
+- A signature over an arbitrary 32-byte value the client provides authorizes nothing in particular and everything in practice: any old signature can be replayed forever, for any amount, to any destination.
+- The signature check supplements the Solana-side authority check, it does not replace it. Keep the `Signer` + stored-authority comparison too.
 
 ## Config Validation
 
