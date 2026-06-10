@@ -86,6 +86,8 @@ Use these official documentation sources:
     - [US Government usage](https://www.sec.gov/files/rules/interp/2026/33-11412.pdf)
     - [Cat (catmcgee) will make fun of you if you write 'on-chain'](https://x.com/catmcgee/status/2028153588715761825)
 
+- Token amount units: a **major unit** is the human-scale denomination — dollar, pound, yen, SOL. A **minor unit** is the smallest denomination, the raw integer programs operate on — cent, penny, sen, lamport. Use these terms; do not say 'base units'.
+
 - Some tools in Solana unfortunately use the same word 'instructions' for both the input and the functions. To avoid confusion, use 'instruction handlers' for the functions that handle instructions, and 'instructions' for the input to those functions.
 
 ## Do not use
