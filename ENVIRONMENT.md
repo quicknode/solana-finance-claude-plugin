@@ -35,11 +35,11 @@ Always rebuild the `.so` after changing program code, before re-running tests: t
 
 ## Quasar CLI
 
-Quasar installs from git, not crates.io. Pin the rev your project's CI pins (revs move and regress):
+Quasar installs from git, not crates.io. Pin the exact commit your project's CI pins (branch tips move and regress):
 
 ```bash
 git clone https://github.com/blueshift-gg/quasar /tmp/quasar
-cd /tmp/quasar && git checkout <pinned-rev>
+cd /tmp/quasar && git checkout <pinned-commit>
 cargo install --path cli --locked
 ```
 
