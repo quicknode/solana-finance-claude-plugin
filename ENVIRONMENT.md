@@ -22,7 +22,30 @@ tar -xjf /tmp/platform-tools.tar.bz2 -C ~/.cache/solana/${PT_VERSION}/platform-t
 
 Different tools pin different platform-tools versions (the Quasar CLI pins its own); repeat the download for each version requested in error messages.
 
-## Anchor projects without the anchor CLI
+## Anchor CLI
+
+Install from crates.io (a long compile, roughly ten minutes):
+
+```bash
+cargo install anchor-cli --locked
+```
+
+`anchor test` reads the wallet path from `Anchor.toml` (`~/.config/solana/id.json` by default), so create a throwaway keypair once per container:
+
+```bash
+solana-keygen new --no-bip39-passphrase -s -o ~/.config/solana/id.json
+```
+
+In an existing repository the original program keypairs are usually not committed, so `anchor build` fails its program-ID check against the freshly generated keypair. Do NOT run `anchor keys sync` (it would change the program IDs, which this skill forbids); build with the check skipped, and test against the in-process SVM with no validator and no deploy:
+
+```bash
+anchor build --ignore-keys
+anchor test --skip-local-validator --skip-deploy
+```
+
+(Verified: this runs the project's `test = "cargo test"` LiteSVM suite. Without `--skip-local-validator` anchor tries to spawn a `surfpool` validator; without `--skip-deploy` it tries to deploy to `localhost:8899`.)
+
+### Without the anchor CLI
 
 `anchor build` and `anchor test` are wrappers. If the anchor CLI is not installed, the equivalent is:
 
