@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "solana-finance",
+  "displayName": "Solana Finance",
+  "description": "Expert Solana development with Claude: production-grade Anchor, Quasar, Rust, and TypeScript patterns with a focus on financial correctness — onchain math, escrows, AMMs, vaults, oracle freshness, and slippage. Made by Quicknode.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Quicknode",
+    "url": "https://www.quicknode.com"
+  },
+  "homepage": "https://github.com/quicknode/solana-claude-skill",
+  "repository": "https://github.com/quicknode/solana-claude-skill",
+  "license": "MIT",
+  "keywords": [
+    "solana",
+    "finance",
+    "defi",
+    "anchor",
+    "rust",
+    "typescript",
+    "quasar",
+    "litesvm"
+  ]
+}
