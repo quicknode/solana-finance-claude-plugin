@@ -11,7 +11,7 @@ explanation-specific guidance not covered there.
 ## Explain through people and motivations
 
 - **Cast the walkthrough with named people, each with a concrete motive.** A
-  protocol becomes legible when you follow real actors doing real things.
+  program becomes legible when you follow real actors doing real things.
 - **Naming convention.** End *users* take names from the start of the alphabet —
   **Alice, Bob, Carol, Dave** — and are ordinary users, never Solana developers.
   *Admins / operators* take a name from later in the alphabet — **Maria**, or
