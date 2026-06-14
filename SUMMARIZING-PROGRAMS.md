@@ -3,18 +3,10 @@
 Rules for explaining a Solana program clearly and truthfully — in a README, a
 walkthrough, a video script, or an answer.
 
-**These build on [SKILL.md](SKILL.md), which already governs the shared rules** and
-apply whenever you explain a program, not just when you write one:
-
-- *Fight for Truth* — grep before naming any identifier; describe what **is**, not
-  what was.
-- *Terminology* — Solana, not Ethereum ("programs" not "smart contracts",
-  "transaction fees" not "gas").
-- *Writing About Financial Software* — one name per role; describe custody
-  precisely instead of saying "non-custodial"/"trustless"; name the actual
-  instruction handlers in lifecycle prose.
-
-This file adds only the explanation-specific guidance not covered there.
+**These build on [SKILL.md](SKILL.md)** and apply whenever you explain a program,
+not only when you write one — in particular its *Fight for Truth*, *Terminology*,
+and *Writing About Financial Software* sections. This file adds only the
+explanation-specific guidance not covered there.
 
 ## Explain through people and motivations
 
