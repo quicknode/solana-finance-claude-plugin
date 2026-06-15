@@ -56,6 +56,71 @@ explanation-specific guidance not covered there.
   vault + share mint; obligations; per-obligation collateral vaults) rather than
   hand-waving "the program stores it."
 
+## Show the state changes, step by step
+
+A walkthrough is only legible if the reader can see what each call *does* to
+onchain state. Render the program as a ledger, one instruction at a time.
+
+- **Go call by call, in the order a real user invokes them, across the whole
+  lifecycle.** Create → register → act → match → cancel → settle → withdraw.
+  One instruction per step; don't skip the unglamorous setup or the closing
+  settle/withdraw — those are where custody and incentives become real.
+- **For each step, list the accounts it touches as `ADDED` (created here) or
+  `UPDATED` (mutated here); for `UPDATED`, show only the fields that change, as
+  `before → after`.** Don't reprint unchanged state — the diff is the point.
+- **Label every account's address model and authority.** Mark it *off curve* (a
+  PDA — list its seeds) or *on curve* (a plain keypair, client-generated), and
+  name who signs for it. This is what makes custody legible: a vault keypair
+  whose authority is a market PDA, or an order book held as a client keypair
+  rather than a PDA, each tell the reader who can move what.
+- **End every step with an explicit token-movement block** — `FROM → TO`,
+  amount, and the reason (collateral lock, fee sweep, settlement payout). When
+  nothing moves, write `none` and say why. Readers assume a match pays out;
+  show them when it doesn't.
+- **Separate accounting from custody.** A match or fill usually moves *numbers*
+  — credited/owed (unsettled) balances — while the tokens stay in the vaults
+  until a later settle. State plainly where value is *owed* versus where it has
+  actually *moved*; conflating the two is the most common way a walkthrough lies.
+- **Annotate the fee on every step, including the ones that generate none.**
+  Show the arithmetic by hand (e.g. `250 × 3 = 750; 750 × 25 bps ÷ 10,000 =
+  1.875 → 1`) and state the rounding direction, deferring to *Onchain Financial
+  Math → round in the protocol's favour* in [RUST.md](RUST.md). "Fee generated:
+  none — nothing filled" on a resting order is as informative as the one line
+  where a fee is born.
+- **Explain each non-obvious design decision the moment it first bites, in a
+  sentence or two — not in a separate architecture dump.** Why an order book is
+  a client keypair, not a PDA (it can be ~180 KB; a program can't allocate
+  something that large inside a transaction, so the client creates it and the
+  program verifies it is empty and program-owned); why a resting maker sets the
+  fill price (the taker gets price improvement); why N fills sweep one fee
+  transfer, not N.
+- **Keep numbers small and hand-verifiable, and reconcile at the end.** Use
+  quantities a reader can multiply in their head, so they can check each vault
+  balance and confirm tokens-in == tokens-out — the same conservation check
+  [RUST.md](RUST.md) requires of the program itself (*Assert token
+  conservation*).
+
+A single step in this format:
+
+```
+### Carol asks to sell 3 NVDAx at 245 — and matches Bob's resting 250 bid
+
+ADDED — Order #3 (Carol)   [off curve — PDA, seeds: "order" + market + order_id]
+    side: ask   price: 245 (her limit, NOT the 250 fill)   qty: 3   status: Filled
+
+UPDATED — fee_vault        [on curve — keypair; authority = Market PDA]
+    balance: 0 → 1 USDC                 ← the fee is born here
+
+UPDATED — Bob MarketUser   [off curve — PDA]
+    unsettled_base: 0 → 3               (owed to Bob, not yet paid out)
+
+TOKEN MOVEMENT:
+    Carol base ATA → base_vault   3 NVDAx   (taker collateral lock)
+    quote_vault    → fee_vault    1 USDC    (one sweep after all fills)
+
+Fee generated: 1 USDC  (250 × 3 = 750; 750 × 25 bps ÷ 10,000 = 1.875 → 1, rounded down)
+```
+
 ## Name peers, kept current
 
 Reference real comparable programs (e.g. **Kamino Lend**, **MarginFi**, **Save**)

@@ -149,6 +149,7 @@ These apply to READMEs, docs, blog posts, and PR descriptions for finance-relate
 - **Be careful with the word "securities".** It's a legal term. SOL is not a security. Asset-leasing is not "securities lending" even when the mechanics are analogous. Prefer "asset lending", "token lending", or "directional token lending" — and ask before picking one.
 - **Spell out two-asset flows with concrete examples.** "Posts collateral and takes delivery of borrowed tokens" reads circular. "Posts USDC as collateral, borrows NVDAx" makes the asymmetry obvious. Don't make the reader infer that mints A and B are different things.
 - **Name the instruction handlers in lifecycle prose.** When walking through "what the user does" (open position, close position, liquidate), name the actual handler (`take_lease`, `return_lease`, `liquidate`). Plain-English mechanics without handler names leave the reader unable to connect the narrative to the code.
+- **When you explain or summarize a program** — a README, walkthrough, video script, or answer — follow [SUMMARIZING-PROGRAMS.md](SUMMARIZING-PROGRAMS.md): persona-driven casts, real assets, correct incentives, and step-by-step account state-transition + token-movement ledgers.
 
 ## General Coding Guidelines
 
