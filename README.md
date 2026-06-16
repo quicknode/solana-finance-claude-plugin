@@ -1,23 +1,19 @@
-# Solana Finance
+# Solana Finance Plugin & Skill
 
-A Claude Code plugin for creating and editing Solana projects, including Rust/Anchor/Quasar and TypeScript, with a focus on:
+A Claude Code plugin for creating and editing Solana projects, specifically Rust projects in Anchor and Quasar, with a focus on:
 
-- Maintainability
-- Readability
-- Minimal code
-- Financial math
-- 2026 best practices
+- Accuracy, consistency and security for financial software
+- Maintainability, readability, and minimal code
+- Current best practices including Rust/LiteSVM for testing
 
-This skill has the **most stars of any ecosystem Solana Claude skill** and is made by someone working in the software industry for more than 25 years, based on production-code used by some of the largest programs on Solana. 
-
-Made by [Quicknode](https://quicknode.com).
+This skill has the **most stars of any ecosystem Solana Claude skill** and is based on production-code used by some of the largest programs on Solana. If you're new to Solana: Solana programs are called 'smart contracts' older blockchains, that's what this skill builds.
 
 > [!TIP]
 > If you find this plugin useful, please add a GitHub star above! 🙏 
 
 ## What is this?
 
-**Solana Finance** is a Claude Code plugin that bundles the `solana` skill — a reusable instruction set Claude automatically applies when working on Solana code, or that you can invoke manually. Skills are triggered automatically based on context (e.g. opening an Anchor program or a Solana Kit client).
+**Solana Finance** is a Claude Code skill that bundles the `solana` skill — a reusable instruction set Claude automatically applies when working on Solana code, or that you can invoke manually. Skills are triggered automatically based on context (e.g. opening an Anchor program or a Solana Kit client).
 
 ## Installation
 
@@ -34,7 +30,7 @@ Once the plugin is published, install it from the marketplace:
 You can also install just the skill directly:
 
 ```bash
-npx skills add https://github.com/quicknode/solana-claude-skill
+npx skills add https://github.com/quicknode/solana-finance-skill
 ```
 
 This installs the skill to your Claude Code skills directory (`~/.claude/skills/`).
