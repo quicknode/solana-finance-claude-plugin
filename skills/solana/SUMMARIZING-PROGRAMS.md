@@ -4,17 +4,16 @@ Rules for explaining a Solana program clearly and truthfully — in a README, a
 walkthrough, a video script, or an answer.
 
 **These build on [SKILL.md](SKILL.md)** and apply whenever you explain a program,
-not only when you write one — in particular its *Fight for Truth*, *Terminology*,
-and *Writing About Financial Software* sections. This file adds only the
+not only when you write one — in particular its _Fight for Truth_, _Terminology_,
+and _Writing About Financial Software_ sections. This file adds only the
 explanation-specific guidance not covered there.
 
 ## Explain through people and motivations
 
-- **Cast the walkthrough with named people, each with a concrete motive.** A
-  program becomes legible when you follow real actors doing real things.
-- **Naming convention.** End *users* take names from the start of the alphabet —
+- **Cast the walkthrough with named people, each with a concrete motive.** A program becomes legible when you follow real actors doing real things, usually with a profit motive. Eg, nobody "wants to liquidate bad positions" - they want to "make money by liquidating bad positions".
+- **Naming convention.** End _users_ take names from the start of the alphabet —
   **Alice, Bob, Carol, Dave** — and are ordinary users, never Solana developers.
-  *Admins / operators* take a name from later in the alphabet — **Maria**, or
+  _Admins / operators_ take a name from later in the alphabet — **Maria**, or
   another late letter.
 - **Every actor needs a motivation — including the operator.** If a participant
   has no reason to take part, the explanation (and probably the program) is
@@ -58,7 +57,7 @@ explanation-specific guidance not covered there.
 
 ## Show the state changes, step by step
 
-A walkthrough is only legible if the reader can see what each call *does* to
+A walkthrough is only legible if the reader can see what each call _does_ to
 onchain state. Render the program as a ledger, one instruction at a time.
 
 - **Go call by call, in the order a real user invokes them, across the whole
@@ -68,8 +67,8 @@ onchain state. Render the program as a ledger, one instruction at a time.
 - **For each step, list the accounts it touches as `ADDED` (created here) or
   `UPDATED` (mutated here); for `UPDATED`, show only the fields that change, as
   `before → after`.** Don't reprint unchanged state — the diff is the point.
-- **Label every account's address model and authority.** Mark it *off curve* (a
-  PDA — list its seeds) or *on curve* (a plain keypair, client-generated), and
+- **Label every account's address model and authority.** Mark it _off curve_ (a
+  PDA — list its seeds) or _on curve_ (a plain keypair, client-generated), and
   name who signs for it. This is what makes custody legible: a vault keypair
   whose authority is a market PDA, or an order book held as a client keypair
   rather than a PDA, each tell the reader who can move what.
@@ -77,14 +76,14 @@ onchain state. Render the program as a ledger, one instruction at a time.
   amount, and the reason (collateral lock, fee sweep, settlement payout). When
   nothing moves, write `none` and say why. Readers assume a match pays out;
   show them when it doesn't.
-- **Separate accounting from custody.** A match or fill usually moves *numbers*
+- **Separate accounting from custody.** A match or fill usually moves _numbers_
   — credited/owed (unsettled) balances — while the tokens stay in the vaults
-  until a later settle. State plainly where value is *owed* versus where it has
-  actually *moved*; conflating the two is the most common way a walkthrough lies.
+  until a later settle. State plainly where value is _owed_ versus where it has
+  actually _moved_; conflating the two is the most common way a walkthrough lies.
 - **Annotate the fee on every step, including the ones that generate none.**
   Show the arithmetic by hand (e.g. `250 × 3 = 750; 750 × 25 bps ÷ 10,000 =
-  1.875 → 1`) and state the rounding direction, deferring to *Onchain Financial
-  Math → round in the protocol's favour* in [RUST.md](RUST.md). "Fee generated:
+1.875 → 1`) and state the rounding direction, deferring to _Onchain Financial
+  Math → round in the protocol's favour_ in [RUST.md](RUST.md). "Fee generated:
   none — nothing filled" on a resting order is as informative as the one line
   where a fee is born.
 - **Explain each non-obvious design decision the moment it first bites, in a
@@ -97,8 +96,8 @@ onchain state. Render the program as a ledger, one instruction at a time.
 - **Keep numbers small and hand-verifiable, and reconcile at the end.** Use
   quantities a reader can multiply in their head, so they can check each vault
   balance and confirm tokens-in == tokens-out — the same conservation check
-  [RUST.md](RUST.md) requires of the program itself (*Assert token
-  conservation*).
+  [RUST.md](RUST.md) requires of the program itself (_Assert token
+  conservation_).
 
 A single step in this format:
 
@@ -137,6 +136,11 @@ irrelevant projects, and don't reach to other ecosystems for the comparison.
   as such — e.g. a mock price account standing in for a real Switchboard/Pyth
   feed in tests. Distinguish "missing functionality" (fix it) from "test
   stand-in" (document it).
+- Ensure each step makes sense given previous steps - eg, Maria can't claim interest paid by Bob if Bob hasn't paid any interest yet. Add missing steps.
+
+## Finish the summary with where everyone ended up
+
+For example: "Alice earned a yield, Bob stayed long and won, Carol's short went against her, Dave got paid to clean it up, and Maria earned the spread on every dollar of interest the market produced."
 
 ## Shape
 
