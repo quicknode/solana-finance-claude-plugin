@@ -37,8 +37,9 @@ Use your preferred tool (Rust or Python) to ensure the math used during the scen
 
 A walkthrough is only legible if the reader can see what each call _does_ to onchain state. Render the program as a ledger, one instruction at a time.
 
-- **Go call by call, in the order a real user invokes them, across the whole lifecycle.** Create → register → act → match → cancel → settle → withdraw. One instruction per step; don't skip the unglamorous setup or the closing settle/withdraw — those are where custody and incentives become real.
-- **For each step, list the accounts it touches as `ADDED` (created here) or `UPDATED` (mutated here); for `UPDATED`, show only the fields that change, as `before → after`.** Don't reprint unchanged state — the diff is the point.
+- Go in the order a real user invokes each instruction handler, across the whole lifecycle.One instruction handler per step unless the task genuinely needs multiple instruction handlers. Don't skip the unglamorous setup or the closing settle/withdraw — those are where custody and incentives become real.
+- Ensure each step makes sense given previous steps - eg, Maria can't claim interest paid by Bob if Bob hasn't paid any interest yet. Add missing steps. An LP provider can't provide ACME tokens if ACME is a new token that nobody has purchased before.
+- **For each step, show the invoked instruction handler and its arguments. List the accounts it touches as `ADDED` (created here) or `UPDATED` (mutated here); for `UPDATED`, show only the fields that change, as `before → after`.** Don't reprint unchanged state — the differences are the point.
 - **Label every account's address model and authority.** Mark it _off curve_ (a PDA — list its seeds) or _on curve_ (a plain keypair, client-generated), and name who signs for it. This is what makes custody legible: a vault keypair whose authority is a market PDA, or an order book held as a client keypair rather than a PDA, each tell the reader who can move what.
 - **End every step with an explicit token-movement block** — `FROM → TO`, amount, and the reason (collateral lock, fee sweep, settlement payout). When nothing moves, write `none` and say why. Readers assume a match pays out; show them when it doesn't.
 - **Separate accounting from custody.** A match or fill usually moves _numbers_ — credited/owed (unsettled) balances — while the tokens stay in the vaults until a later settle. State plainly where value is _owed_ versus where it has actually _moved_; conflating the two is the most common way a walkthrough lies.
@@ -75,7 +76,6 @@ Reference real comparable programs (e.g. **Kamino Lend**, **MarginFi**, **Save**
 
 - **If a program isn't production-ready, fix it, don't paper over it.** When a feature is missing or a participant has no incentive to take part (e.g. the market operator earns nothing), say so and offer to add it — a disclaimer is not a substitute for a working design.
 - **Deliberate test-only scaffolding is different** and should simply be labelled as such — e.g. a mock price account standing in for a real Switchboard/Pyth feed in tests. Distinguish "missing functionality" (fix it) from "test stand-in" (document it).
-- Ensure each step makes sense given previous steps - eg, Maria can't claim interest paid by Bob if Bob hasn't paid any interest yet. Add missing steps.
 
 ## Finish the summary with where everyone ended up
 
