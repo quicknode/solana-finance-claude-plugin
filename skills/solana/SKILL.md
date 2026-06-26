@@ -58,7 +58,7 @@ Use these official documentation sources:
 
 - **Anchor**: https://www.anchor-lang.com/docs
 - **LiteSVM**: https://www.anchor-lang.com/docs/testing/litesvm
-- **Anchor Error Codes**: https://raw.githubusercontent.com/coral-xyz/anchor/master/lang/src/error.rs
+- **Anchor Error Codes**: https://github.com/otter-sec/anchor/blob/master/lang/error/src/lib.rs
 - **Quasar**: https://quasar-lang.com/docs
 - **Solana Kite**: https://solanakite.org
 - **Solana Kit**: https://solanakit.com
