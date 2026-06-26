@@ -66,6 +66,7 @@ Use these official documentation sources:
 - **Switchboard** (if used): https://docs.switchboard.xyz/docs-by-chain/solana-svm
 - **Arcium** (if used): https://docs.arcium.com/developers
 - **Quicknode Solana Program Examples**: https://github.com/quicknode/solana-program-examples
+- **Anatoly Yakovenko's GitHub**: https://github.com/aeyakovenko in particular the 'Percolator' perps project repositories.
 
 ## Terminology
 
