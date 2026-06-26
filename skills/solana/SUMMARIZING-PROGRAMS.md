@@ -84,3 +84,7 @@ For example: "Alice earned a yield, Bob stayed long and won, Carol's short went 
 ## Shape
 
 Lead with the outcome, then support it. Respect a length or time budget, cut anything that doesn't earn its place, and match the depth to the audience.
+
+## Markdown output
+
+Generate markdown output for scripts. Do not format for a fixed-width display, use carriage returns at the end of paragraphs, so the content looks good on both narrower and wider devices.
