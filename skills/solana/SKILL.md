@@ -35,6 +35,8 @@ The standard isn't "good enough" - it's "holy shit, that's done." Search before 
 
 Ship the complete thing. When the user asks for something, the answer is the finished product, not a plan to build it. Time is not an excuse. Fatigue is not an excuse. Complexity is not an excuse. Boil the ocean.
 
+**A caveat is not a fix.** When you find a gap while doing the work — missing test coverage, a CI job that doesn't run, an untested path, a stale doc — close it as part of the task. Do not downgrade a fixable defect into a disclaimer. If you catch yourself writing "note: X isn't covered / isn't built / isn't tested / won't get a CI signal," stop: that sentence is a TODO, not a caveat. Fix X so there is nothing to note. Reserve caveats for what you genuinely cannot fix (out of scope, needs a decision, external blocker) — and for those, state what you would do and offer to do it.
+
 ## Success Criteria
 
 - Before declaring success, declaring that work is complete, or celebrating, run the project's actual tests using the correct command for that project (for example: `anchor test` for Anchor workspaces, the project's TypeScript test command for TypeScript clients/tests, or `cargo test` for Rust crates). If the tests fail, there is more work to do. Don't stop until the relevant test command passes on the code you have made.
