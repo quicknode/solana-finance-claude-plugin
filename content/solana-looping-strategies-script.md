@@ -1,33 +1,34 @@
 # Looping on Solana — 3-minute video script
 
-Target length: ~3 minutes at a natural speaking pace (~480 words).
+Target length: ~3 minutes at a natural speaking pace (~500 words).
+Example trade: USDC in, leveraged NVDAx (tokenized Nvidia) out.
 
 ---
 
-**[0:00 — What looping is, and why people do it]**
+**[0:00 — The pitch]**
 
-Looping is DeFi's version of a leveraged carry trade. On Solana it usually looks like this: deposit a yield-bearing asset — say JitoSOL — into a lending market like Kamino or marginfi, borrow SOL against it, swap that SOL back into JitoSOL, deposit again, and repeat. Every loop, you're stacking more of the staking yield on the same starting capital. As long as the yield you earn is higher than the rate you pay to borrow, the spread is pure profit — multiplied by your leverage. That spread is the entire trade. People loop to turn a 7% staking yield into 15 or 20%, or to farm points and emissions with size they don't actually have.
+Say you've got a thousand USDC and you think Nvidia is going up. You could buy NVDAx — tokenized Nvidia stock on Solana — and get one-to-one exposure. Looping turns that same thousand dollars into two or three thousand dollars of Nvidia, onchain, no brokerage account, no margin desk. Here's how: buy NVDAx with your USDC, deposit it into a lending market as collateral, borrow USDC against it, buy more NVDAx, deposit that too, and repeat. Your dollars become the debt. The stock becomes the collateral. Each loop, the position grows.
 
 **[0:40 — LTV: the number that runs everything]**
 
-The whole strategy is governed by loan-to-value, or LTV: how much you can borrow against your collateral. If JitoSOL has an 80% max LTV, depositing 10 SOL worth lets you borrow 8. And here's the key mechanic: each loop shrinks. Deposit 10, borrow 8. Deposit that 8, borrow 6.4. Then 5.12, and so on. It's a geometric series, and it converges: at 80% LTV your maximum possible exposure is 1 divided by 1 minus 0.8 — five times your starting capital. You can never loop past that ceiling, and in practice you stop well short of it, because max LTV sits right next to liquidation LTV.
+The whole strategy is governed by loan-to-value: how much you can borrow against your collateral. Tokenized stocks get conservative LTVs — call it 50%. So deposit $1,000 of NVDAx, borrow $500. Redeposit, borrow $250. Then $125. Every loop shrinks — it's a geometric series, and it converges: max exposure is one divided by one minus the LTV. At 50%, that's 2x, ever. You can't loop past it, and in practice you stop short, because max LTV sits right next to liquidation LTV.
 
 **[1:20 — Actual exposure versus perceived exposure]**
 
-This is where people get hurt. Your wallet shows 10 SOL. Your actual exposure after three loops might be 25. If you're looping an LST against SOL, your *price* exposure is mostly to the peg between them, not to SOL itself — which feels safe. But your *liquidation* exposure is to everything: the LST trading below fair value during a panic, borrow rates spiking when utilization jumps, or an oracle printing a bad price. A 3% depeg at 4x leverage is a 12% hit to your equity, and it can push you straight into liquidation.
+This is where people get hurt. You put in $1,000, so it feels like a $1,000 bet. After looping you're actually holding $1,900 of Nvidia against a $900 loan. Now a 10% drop in Nvidia isn't a $100 loss — it's $190, nineteen percent of your money. And you don't get to ride it out: if the collateral falls far enough, the protocol liquidates you automatically and the loss is locked in. One more wrinkle with tokenized stocks: Nvidia trades six and a half hours a day in New York. NVDAx trades around the clock. Earnings drop after close on a Friday and your position reprices all weekend while the real market is shut.
 
-**[1:50 — Automated looping]**
+**[1:55 — Automated looping]**
 
-You don't have to loop by hand anymore. Kamino Multiply, marginfi's looper, and products like Loopscale use flash loans to open the entire leveraged position in a single transaction — one click, max efficiency, and one click to unwind. Convenient, but the leverage is identical. The button being easy doesn't make the position safe.
+You don't loop by hand anymore. Platforms like Kamino run this as a one-click product — a flash loan opens the whole position at your target leverage in a single transaction, and one click unwinds it. Same leverage, easier button. And you can run it in reverse: deposit USDC, borrow the stock, sell it — congratulations, you've built a leveraged short.
 
 **[2:15 — The real risks]**
 
-Be honest about what can go wrong. Borrow rates are variable — a rate spike can flip your carry negative overnight, so a profitable loop becomes a position that bleeds. High utilization can trap you: if all the SOL is borrowed, you can't unwind. Liquidations on leverage are expensive — you pay the penalty on your whole borrowed stack, not your deposit. Add smart contract risk, oracle risk, and yields propped up by temporary points programs.
+Here's the part the APY screenshots skip. This position has negative carry: you're paying interest on the USDC loan every single day, and the stock pays you nothing onchain — time works against you, so it's a trade, not an investment. Borrow rates are variable and can spike. If the market turns and everyone unwinds at once, thin tokenized-stock liquidity means slippage on the way out. Liquidation penalties apply to the whole borrowed stack, not your deposit. And you're stacking smart contract risk and oracle risk on top of plain old Nvidia risk. The other flavor of looping — staked SOL against SOL — flips the carry positive and gets paid to wait, but that's a different video.
 
 **[2:45 — Close]**
 
-So: know your real exposure, not your deposit. Watch the spread, not the APY. And keep your health factor far from the line — because on-chain, nobody calls you before they liquidate you.
+So: know your real exposure, not your deposit. Watch the interest clock. And keep your health factor far from the line — because onchain, nobody calls you before they liquidate you.
 
 ---
 
-*Notes for the presenter: numbers (80% LTV → 5x max leverage) are illustrative; check live parameters on the protocol before publishing. Consider showing the geometric series 10 → 8 → 6.4 → 5.12 on screen during the LTV section.*
+*Notes for the presenter: the 50% LTV → 2x cap is illustrative — check the live xStocks market parameters (Kamino, etc.) before recording. The $1,000 → $500 → $250 → $125 series is worth showing on screen during the LTV section. The "$1,900 of Nvidia against a $900 loan" figures assume ~3–4 loops at 50% LTV, stopped short of the cap.*
