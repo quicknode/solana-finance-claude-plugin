@@ -19,7 +19,7 @@ This is where people get hurt. You put in $1,000, so it feels like a $1,000 bet.
 
 **[1:55 — Automated looping]**
 
-You don't loop by hand anymore. Platforms like Kamino run this as a one-click product — a flash loan opens the whole position at your target leverage in a single transaction, and one click unwinds it. Same leverage, easier button. And you can run it in reverse: deposit USDC, borrow the stock, sell it — congratulations, you've built a leveraged short.
+You don't loop by hand anymore. Platforms like Kamino run this as a one-click product, using a flash loan as scaffolding: flash-borrow $1,000, buy the whole $2,000 of NVDAx at once, deposit it, take out a normal $1,000 loan against it, and repay the flash loan with that — all in one transaction. The flash loan dies at the end of the transaction; the position it built lives on: your collateral, plus an ordinary loan. Same leverage as looping by hand, one click. And you can run it in reverse: deposit USDC, borrow the stock, sell it — congratulations, you've built a leveraged short.
 
 **[2:15 — The real risks]**
 
