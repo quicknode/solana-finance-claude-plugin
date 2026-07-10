@@ -15,6 +15,7 @@ Rules for explaining a Solana program clearly and truthfully — in a README, a 
   - **Dave** liquidates unhealthy positions for the discount.
   - **Maria** runs the market and earns the interest spread (the reserve factor).
 - **Show opposing cases when the program is symmetric** (a long that wins and a short that gets liquidated teaches more than one happy path).
+- **Set the story in the wider economy, not in crypto itself.** The program is the rails; the scenario should be cargo a non-crypto reader recognizes. Good: raising funds to manufacture a production run of equipment, a startup raising a round, stocking inventory, earning yield on savings, staying long NVIDIA. Bad (crypto-for-crypto): raising funds to audit a Solana program, betting on token prices, funding a protocol treasury. If the scenario only makes sense to someone already deep in crypto, replace it.
 
 ## Use real, recognizable assets
 
