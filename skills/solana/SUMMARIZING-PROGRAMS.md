@@ -8,6 +8,7 @@ Rules for explaining a Solana program clearly and truthfully — in a README, a 
 
 - **Cast the walkthrough with named people, each with a concrete motive.** A program becomes legible when you follow real actors doing real things, usually with a profit motive. Eg, nobody "wants to liquidate bad positions" - they want to "make money by liquidating bad positions".
 - **Naming convention.** End _users_ take names from the start of the alphabet — **Alice, Bob, Carol, Dave** — and are ordinary users, never Solana developers. _Admins / operators_ take a name from later in the alphabet — **Maria**, or another late letter.
+- **Standard starting wallet.** Every character begins every walkthrough with the same wallet: **one SOL** (for rent deposits and transaction fees) and **1,000 USDC**, plus only the story-specific assets the scenario hands them (a share grant, a stock position, an inventory). All personal spending must fit inside that budget. When a scenario needs institutional-scale money — a launch seed, a market maker's inventory, a deep liquidity pool — attribute it explicitly to a firm's treasury or to a crowd of participants ("the first of twelve providers"), never to one character's personal wallet.
 - **Every actor needs a motivation — including the operator.** If a participant has no reason to take part, the explanation (and probably the program) is incomplete. A canonical lending cast:
   - **Alice** wants to earn yield on her USDC.
   - **Bob** wants to stay long NVIDIA, so he borrows USDC against his NVDAx instead of selling it.
