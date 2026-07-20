@@ -137,6 +137,8 @@ Keep the README focused and practical. Avoid generic boilerplate - write documen
 - **No ASCII art, no Mermaid diagrams, no markdown tables.** Use headings, nested bullet lists, or prose. Tables don't render well on chat surfaces.
 - **No em-dashes.** Use a regular dash or rewrite the sentence. Em-dashes are an LLM-output tell. This applies to READMEs, code comments, commit messages, and doc strings.
 - **Don't say "worked example" or "worked scenario".** Just "Example", "Scenario", or "Walkthrough".
+- **Write "ID" in capitals, never "id", in prose.** It is an abbreviation: "a program ID", "the offer ID", "distinct market IDs". A **program ID** is a program's address. Only code identifiers (`program_id`) and the `id.json` filename keep the lowercase form.
+- **Prefer plain conditionals to clever biconditionals.** State a rule in both directions concretely rather than collapsing it into "X holds exactly when Y" or "X _is_ the set of Y". Write "an asset is approved if it has an `ApprovedAsset` account, and not approved if it does not," not "an asset is approved exactly when its `ApprovedAsset` account exists." The plain form reads faster and cannot be misread as set-theory notation.
 
 ## Writing About Financial Software
 
