@@ -1,8 +1,86 @@
 # Quasar Guidelines (Quasar Programs)
 
-Quasar is a zero-copy, zero-allocation Solana framework with Anchor-like syntax (`#[program]`, `#[derive(Accounts)]`, `#[account]`) but much better runtime performance: zero-copy account access, `no_std`, dense instruction discriminators, and compiled output roughly an order of magnitude smaller than equivalent Anchor binaries. Programs use the `quasar-lang`, `quasar-spl`, and `quasar-metadata` crates.
+Quasar is a zero-copy, zero-allocation Solana framework with Anchor-like syntax (`#[program]`, `#[derive(Accounts)]`, `#[account]`) but much better runtime performance: zero-copy account access, `no_std`, dense instruction discriminators, and compiled output roughly an order of magnitude smaller than equivalent Anchor binaries. Programs use the `quasar-lang` and `quasar-spl` crates, plus `quasar-test` for testing. (`quasar-metadata` no longer exists — it was removed upstream before the 0.1.0 release with no replacement, so Metaplex-metadata programs cannot currently be written against the 0.1.0 line.)
 
 Read this alongside the general rules in [SKILL.md](SKILL.md) and the shared Rust + onchain-math rules in [RUST.md](RUST.md) (checked arithmetic, financial math, PDA bumps, project structure — those apply to Quasar too). The surface is familiar to Anchor developers, but several conveniences work differently or are absent.
+
+## Versions and installation (0.1.0)
+
+Quasar's public launch line is **0.1.0**, developed on the `0.1.0-release` branch of `https://github.com/blueshift-gg/quasar`. Its versioning contract (`VERSIONING.md` upstream): `0.1.z` is one compatible release line — the documented `quasar-lang`/`quasar-spl`/`quasar-test` Rust APIs, macro behavior, IDL wire format, generated-client signatures, and stable CLI commands stay compatible within it, and deliberate breaks go to `0.2.0`. (`quasar-cli` as a *library* has no stability promise — only its CLI commands do.)
+
+At the time this skill was updated (July 2026), crates.io still hosts `0.0.0` placeholders for `quasar-lang` and `quasar-cli` — only `quasar-svm 0.1.0` is actually published — so the 0.1.0 line installs from git, pinned by rev to the `0.1.0-release` branch head:
+
+```toml
+[dependencies]
+quasar-lang = { git = "https://github.com/blueshift-gg/quasar", rev = "be60fca" }
+
+[dev-dependencies]
+quasar-test = { git = "https://github.com/blueshift-gg/quasar", rev = "be60fca" }
+```
+
+and the CLI with:
+
+```bash
+cargo install --git https://github.com/blueshift-gg/quasar --rev be60fca quasar-cli --locked
+```
+
+Keep the dependency rev and the installed CLI rev in lockstep. Once the 0.1.0 crates are published, switch to `quasar-lang = "=0.1.0"` / `cargo install quasar-cli --version 0.1.0 --locked`.
+
+## Quasar.toml (0.1.0 schema)
+
+The canonical project file:
+
+```toml
+[project]
+name = "my-program"
+
+[testing]
+command = { program = "cargo", args = ["test"] }
+
+[clients]
+path = "target/client"
+targets = ["rust"]
+```
+
+`clients.targets` accepts `rust`, `kit`, `web3`, `python`, `go`, `c` (Python/Go/C are preview). The pre-0.1.0 keys are **hard parse errors**, not deprecations — migrate them:
+
+| Old (pre-0.1.0) | 0.1.0 |
+|---|---|
+| `[toolchain] type = "solana"` | delete the section |
+| `[testing] language = "rust"` | delete |
+| `[testing.rust] framework = "quasar-svm"` + `[testing.rust.test]` | `[testing] command = { program = "cargo", args = ["test"] }` |
+| `[testing.typescript]` | removed — testing is Rust `quasar-test` |
+| `[clients] languages = [...]` | `targets = [...]` |
+
+## Cargo.toml scaffold (0.1.0)
+
+What `quasar init` generates, and what existing projects must match:
+
+```toml
+[lints.rust.unexpected_cfgs]
+level = "warn"
+check-cfg = ['cfg(target_os, values("solana"))']
+
+[lib]
+# "lib" is required alongside "cdylib": the IDL build compiles the crate
+# as a host library.
+crate-type = ["cdylib", "lib"]
+
+[features]
+alloc = []
+client = []
+debug = []
+idl-build = ["quasar-lang/idl-build"]
+
+[dependencies]
+quasar-lang = { git = "https://github.com/blueshift-gg/quasar", rev = "be60fca" }
+solana-instruction = { version = "3.2.0" }
+
+[dev-dependencies]
+quasar-test = { git = "https://github.com/blueshift-gg/quasar", rev = "be60fca" }
+```
+
+The declared `idl-build` feature and the `"lib"` crate-type are hard requirements of `quasar build` — it generates the IDL and clients first (host build), then compiles the program with `cargo build-sbf --tools-version v1.52`. The IDL step runs `cargo metadata --locked`, so in a checkout without a committed `Cargo.lock` run `cargo generate-lockfile` before the first `quasar build`.
 
 ## Quasar has a `Vec` — do not claim otherwise
 
@@ -100,89 +178,51 @@ The same applies to `PodU32`, `PodI64`, `PodBool`, etc. (and a field may be decl
 
   The generated epilogue moves the account's lamports to `dest` and clears its data. Do not write "Quasar has no close constraint" — it does.
 
-## Testing Quasar programs (QuasarSVM)
+## Testing Quasar programs (quasar-test)
 
-Quasar programs test against **QuasarSVM** — not LiteSVM. It is an in-process SVM with no validator required. Per `Quasar.toml` (`[testing.rust]` with `framework = "quasar-svm"`), the test command is `cargo test` (e.g. `cargo test -- --nocapture` to see CU output).
+Quasar 0.1.0 programs test with the **`quasar-test` fixture harness** (which drives QuasarSVM internally — the SVM is an implementation detail tests never touch). The only test dev-dependency is `quasar-test` itself; it pulls the published `quasar-svm 0.1.0` from crates.io. The pre-0.1.0 pattern — a direct `quasar-svm` git dependency, `QuasarSvm::new().with_program(...)`, `include_bytes!`, `process_instruction`, `assert_success()` — is gone.
 
-Add to `[dev-dependencies]` in the program's `Cargo.toml`:
+Run tests with `quasar test` (builds first), or plain `cargo test` when a compiled artifact already exists: `#[quasar_test]` discovers the program `.so` in `target/deploy/` at **runtime** — there is no `include_bytes!`, so always `quasar build` after changing program code before re-running `cargo test`.
 
-```toml
-[dev-dependencies]
-# Generated Rust client (see [clients] in Quasar.toml) - gives tests
-# typed *Instruction builders instead of hand-built account metas.
-my-program-client = { path = "target/client/rust/my-program-client" }
-quasar-svm = { git = "https://github.com/blueshift-gg/quasar-svm" }
-solana-account = "3.4.0"
-solana-address = { version = "2.2.0", features = ["decode"] }
-solana-instruction = { version = "3.2.0", features = ["bincode"] }
-solana-pubkey = "4.1.0"
-```
-
-At the time this skill was produced (June 2026), Quasar is generally installed from git rather than from crates.io — hence the `git = "..."` dependency above. The `solana-*` crates are versioned independently of each other (per-crate semver), so the differing major versions are expected.
-
-The basic test shape:
+The test shape (this is a complete real test):
 
 ```rust
-use quasar_svm::{Account, Instruction, Pubkey, QuasarSvm};
-use solana_address::Address;
+use {
+    crate::{
+        cpi::{IncrementInstruction, InitializeCounterInstruction},
+        state::Counter,
+    },
+    quasar_test::prelude::*,
+};
 
-use my_program_client::InitializeCounterInstruction;
+// Deterministic addresses keep tests independent of discovery order.
+const PAYER: Pubkey = Pubkey::new_from_array([1; 32]);
 
-fn setup() -> QuasarSvm {
-    let elf = include_bytes!("../target/deploy/my_program.so");
-    QuasarSvm::new().with_program(&Pubkey::from(crate::ID), elf)
-}
+#[quasar_test]
+fn initialize_counter_creates_the_pda(test: &mut Test) {
+    test.add(Wallet::new().at(PAYER));
+    let counter = test.derive_pda(Counter::seeds(&PAYER));
 
-#[test]
-fn test_initialize() {
-    let mut svm = setup();
-    let payer = Pubkey::new_unique();
-    let (counter, _) =
-        Pubkey::find_program_address(&[b"counter", payer.as_ref()], &Pubkey::from(crate::ID));
+    // The counter PDA and system program are canonical derivations, so the
+    // generated instruction only asks for the payer.
+    test.send(InitializeCounterInstruction { payer: PAYER }).succeeds();
 
-    let instruction: Instruction = InitializeCounterInstruction {
-        payer: Address::from(payer.to_bytes()),
-        counter: Address::from(counter.to_bytes()),
-        system_program: Address::from(quasar_svm::system_program::ID.to_bytes()),
-    }
-    .into();
-
-    let result = svm.process_instruction(
-        &instruction,
-        &[
-            // A funded system-owned account for the signer.
-            quasar_svm::token::create_keyed_system_account(&payer, 10_000_000_000),
-            // The not-yet-created PDA: an empty system-owned account.
-            Account {
-                address: counter,
-                lamports: 0,
-                data: vec![],
-                owner: quasar_svm::system_program::ID,
-                executable: false,
-            },
-        ],
-    );
-
-    result.assert_success();
-
-    // Read post-instruction state straight off the result.
-    let counter_account = result.account(&counter).unwrap();
-    assert_eq!(counter_account.data[0], 1); // dense discriminator
+    let state = test.read::<Counter>(counter);
+    assert_eq!(u64::from(state.count), 0);
 }
 ```
 
-Key differences from LiteSVM:
+The pieces:
 
-- Load the program with `QuasarSvm::new().with_program(id, elf)` instead of `svm.add_program(id, bytes)`
-- There is no airdrop or blockhash plumbing: every account the instruction touches is passed explicitly to `process_instruction` as a `quasar_svm::Account`, which embeds its own `address` field. `quasar_svm::token::create_keyed_system_account(&address, lamports)` builds a funded signer account.
-- Assert outcomes with `result.assert_success()`, or `assert!(result.is_ok(), "failed: {:?}", result.raw_result)` for a custom message
-- Read post-instruction account state with `result.account(&pubkey)`
-- Check CU consumption with `result.compute_units_consumed` to assert performance budgets
-- Warp the clock with `svm.warp_to_timestamp(...)` to test time-window logic on both sides of every deadline boundary
-- Well-known IDs are re-exported: `quasar_svm::system_program::ID`, `quasar_svm::SPL_TOKEN_PROGRAM_ID`, and sysvar IDs under `quasar_svm::solana_sdk_ids`
-
-Build the program so its `.so` is on disk at `target/deploy/<name>.so` before the `include_bytes!` compiles. The generated client crate under `target/client/rust/` is produced by the same build (per `[clients]` in `Quasar.toml`).
+- **`#[quasar_test] fn name(test: &mut Test)`** behaves like an ordinary `#[test]`: filters, `#[ignore]`, `#[should_panic]`, and `Result<(), E>` returns all work.
+- **`crate::cpi` instruction builders**: `#[program]` generates an in-crate `cpi` module (host builds only) with one `{PascalFnName}Instruction` struct per handler. Fields are the **caller-controlled** accounts (as `Pubkey`) plus the instruction arguments; accounts pinned by `address = X::seeds(...)`, `Program<...>`, `Sysvar<...>`, and canonical ATAs are derived automatically and omitted. Prefer these over the generated client crate in tests — a `path = "target/client/rust/..."` dev-dependency breaks `cargo generate-lockfile`/`cargo metadata` before the first build. (The build-generated client crate additionally has `{Name}InstructionRaw`, `find_*_address` helpers, and account/event decoders for offchain consumers.)
+- **Fixtures are values** added with `test.add(...)`: `Wallet::new().at(P).lamports(n)` (10 SOL default, `DEFAULT_WALLET_LAMPORTS`), `Mint::new(authority).at(M).supply(n).decimals(d)`, `TokenAccount::new(mint, owner).at(A).amount(n)`, `AssociatedTokenAccount::new(mint, owner).amount(n)`, `Program::new(id, elf)`; add `.token_program(TokenProgram::Token2022)` for Token-2022 variants. Custom protocol states implement `Fixture` once and are reused across tests. Do NOT pre-create empty accounts for init targets: missing writable accounts enter the transaction as empty system accounts, committed on success and left as no placeholder on failure.
+- **World helpers**: `test.derive_pda(X::seeds(&key))` / `derive_pda_with_bump`, `test.derive_ata(owner, mint, TokenProgram::Token)`, typed state seeding with `test.write(addr, XInner { ... })`, raw bytes with `test.set_account(Account::new(addr, owner, lamports, data))`, `test.warp_to_timestamp(t)` (sets the clock's `unix_timestamp` only — there is no slot warp in `quasar-test`; a test that must control `Clock.slot` needs a direct `quasar-svm = "=0.1.0"` dev-dependency and the low-level API).
+- **`test.send(ix)` returns an `Outcome`** (also `send_all([...])` for atomic sequences, `simulate` for no-commit): assert with `.succeeds()`, `.fails_with(MyError::Variant)` (`#[error_code]` enums implement `Into<u32>`), `.fails(ProgramError::MissingRequiredSignature)`, `.cu_at_most(n)`, `.has_lamports(addr, n)`, `.has_tokens(addr, n)`, `.has_supply(mint, n)`, `.is_closed(addr)`; inspect with `outcome.account_changes()`, `.events()`, `.return_value()`, `.logs()`, `.compute_units()`. Read typed post-state with `test.read::<X>(addr)` (Pod fields convert with `u64::from(...)`).
+- **Negative tests** (wrong PDA, wrong signer): `crate::cpi` has no `Raw` variant — convert and tamper instead: `let mut ix: Instruction = FooInstruction { .. }.into(); ix.accounts[i].pubkey = WRONG; test.send(ix).fails_with(...)`. Account order matches the `#[derive(Accounts)]` struct field order.
+- **CPI across programs**: every sibling `.so` with a matching `-keypair.json` in the same `target/deploy` is preloaded automatically; a program from another project's target dir is added explicitly with `test.add(Program::new(OTHER_ID, &std::fs::read("../other/target/deploy/other.so").unwrap()))`.
+- Use deterministic addresses (`Pubkey::new_from_array([1; 32])`), never `Pubkey::new_unique()` — the world's generated addresses are deterministic per test and unique-counter addresses depend on test discovery order.
 
 ## Fight for Truth about Quasar
 
-Per the truthfulness rules in SKILL.md: do not write "Quasar has no `Vec`" or "Quasar has no dynamic types". It has bounded `Vec<T, N>` and `String<N>`; the genuine limitations are (1) no nested dynamic types and (2) fixed-size fields must come before dynamic ones. Before writing any claim about Quasar's type system or APIs, grep the `quasar_lang` prelude or an existing Quasar example to confirm it — Quasar's API moves, and old names (`BufCpiCall`, mandatory `<'info>` lifetimes) appear in stale notes.
+Per the truthfulness rules in SKILL.md: do not write "Quasar has no `Vec`" or "Quasar has no dynamic types". It has bounded `Vec<T, N>` and `String<N>`; the genuine limitations are (1) no nested dynamic types and (2) fixed-size fields must come before dynamic ones. Before writing any claim about Quasar's type system or APIs, grep the `quasar_lang` prelude or an existing Quasar example to confirm it — Quasar's API moves, and stale notes are everywhere: old names (`BufCpiCall`, mandatory `<'info>` lifetimes), the removed `quasar-metadata` crate, the pre-0.1.0 Quasar.toml keys (`[toolchain]`, `testing.rust`, `clients.languages`), and the pre-0.1.0 QuasarSVM test API (`with_program`, `process_instruction`, `assert_success`, `create_keyed_system_account`, a git `quasar-svm` dev-dependency) all describe versions that no longer exist on the 0.1.0 line.
