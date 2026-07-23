@@ -58,15 +58,13 @@ Always rebuild the `.so` after changing program code, before re-running tests: t
 
 ## Quasar CLI
 
-Quasar installs from git, not crates.io. Pin the exact commit your project's CI pins (branch tips move and regress):
+The 0.1.0 line still installs from git (crates.io hosts `0.0.0` placeholders for `quasar-cli`). Pin the exact rev your project's dependencies pin — as of the 0.1.0 launch that is the `0.1.0-release` branch head:
 
 ```bash
-git clone https://github.com/blueshift-gg/quasar /tmp/quasar
-cd /tmp/quasar && git checkout <pinned-commit>
-cargo install --path cli --locked
+cargo install --git https://github.com/blueshift-gg/quasar --rev be60fca quasar-cli --locked
 ```
 
-Then per project: `quasar build` (also regenerates the `target/client/rust/<name>-client` crate the tests import), `quasar test`. The CLI shells out to `cargo build-sbf --tools-version vX.YY`, so the platform-tools workaround above may be needed for that version too.
+Per project, run `cargo generate-lockfile` once in a fresh checkout (the 0.1.0 IDL step runs `cargo metadata --locked`), then `quasar build` (generates the IDL and the `target/client/rust/<name>-client` crate, then compiles the program) and `quasar test` or `cargo test`. The 0.1.0 CLI pins platform-tools **v1.52** (`cargo build-sbf --tools-version v1.52`) and refuses a `cargo-build-sbf` whose bundled platform-tools is older, so the platform-tools workaround above may be needed for v1.52 specifically.
 
 ## Disk hygiene
 
