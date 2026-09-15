@@ -143,7 +143,7 @@ If a handler accepts an offchain signature (ed25519, secp256k1 "sign in with Eth
 
 Framework type checks (Anchor `Account<T>`, Quasar `Account<T>`) only verify owner and discriminator. They do NOT link accounts to each other. Every account in a constraint struct must be bound to something:
 
-- State accounts: `seeds` / `address` derivation, or a stored-address check from another bound account. The spelling is per framework and per version: Anchor 2 puts `address = state.field` on the account being checked (`has_one` is deprecated there), Anchor 1 put `has_one = field` on the state account, and Quasar writes `has_one(field)` on the state account.
+- State accounts: `seeds` / `address` derivation, or a stored-address check from another bound account. Each framework implements it in its own way, and the way changes between versions: Anchor 2 puts `address = state.field` on the account being checked (`has_one` is deprecated there), Anchor 1 put `has_one = field` on the state account, and Quasar writes `has_one(field)` on the state account.
 - Vaults and ATAs: a stored-address check from the state account that recorded them, or `associated_token::*` constraints.
 - Per-user records: seeds that include the signer's key, so user A cannot pass user B's record with their own token account.
 - Mints a state account stores (`usdc_mint`, `asset_mint_a`, ...): a stored-address check in EVERY instruction that reads balances denominated in them. An unbound mint lets a caller substitute a junk mint whose vault is empty and skew any NAV/share calculation.
