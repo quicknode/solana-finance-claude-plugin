@@ -190,6 +190,7 @@ Draw the glyphs exactly as specified - one vocabulary book-wide, no per-figure v
 
 - **Every figure opens with a headline, top-left, bold at 15 units.** It balances the network label opposite and names the moment: "Maria claims her fees", "Carol's ask fills Bob's bid". Without one, the naming falls to the caption, and captions grew into paragraphs that restated the body text around them - a heading and a 283-character caption saying the same thing twice with nothing quick to read in between.
 - **The caption then carries the one thing the drawing cannot.** Not a recital of the accounts in the picture and not a narration of the steps, both of which are already on the canvas. Keep it to a line.
+- **When the drawing says everything, there is no caption.** A headline that names the moment and annotations that carry the numbers leave nothing for a caption but a recital, so most step figures have none; write `![](figures/name.svg)` and the build prints no caption element. The captions that stay say what the picture cannot: an ownership rule the boxes only imply, what is absent from the figure and why, or what will happen to the drawn balances later.
 - **Figure text is the book's sans, Denim INK.** The root element carries `font-family="'Denim INK', Helvetica, Arial, sans-serif"`; nothing inside a figure names another face except the monospace ones above. Sizes are unchanged from the serif they replaced.
 
 ## Some accounts may be named instead of drawn
