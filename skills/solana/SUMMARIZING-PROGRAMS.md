@@ -77,7 +77,7 @@ Reference real comparable programs (e.g. **Kamino Lend**, **MarginFi**, **Save**
 ## Push back on an incomplete program - don't disclaim it
 
 - **If a program isn't production-ready, fix it, don't paper over it.** When a feature is missing or a participant has no incentive to take part (e.g. the market operator earns nothing), say so and offer to add it - a disclaimer is not a substitute for a working design.
-- **Deliberate test-only scaffolding is different** and should simply be labelled as such - e.g. a mock price account standing in for a real Switchboard/Pyth feed in tests. Distinguish "missing functionality" (fix it) from "test stand-in" (document it).
+- **Deliberate test-only scaffolding is different** and should simply be labelled as such - e.g. a mock price account standing in for a real Pyth feed in tests. Distinguish "missing functionality" (fix it) from "test stand-in" (document it).
 
 ## Finish the summary with where everyone ended up
 
