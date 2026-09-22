@@ -65,7 +65,6 @@ Use these official documentation sources:
 - **Solana Kite**: https://solanakite.org
 - **Solana Kit**: https://solanakit.com
 - **Agave (Solana CLI)**: https://docs.anza.xyz/ (Anza makes the Solana CLI and Agave).
-- **Switchboard** (if used): https://docs.switchboard.xyz/docs-by-chain/solana-svm
 - **Arcium** (if used): https://docs.arcium.com/developers
 - **Quicknode Solana Program Examples**: https://github.com/quicknode/solana-program-examples
 - **Anatoly Yakovenko's GitHub**: https://github.com/aeyakovenko in particular the 'Percolator' perps project repositories.
@@ -112,7 +111,7 @@ Use these official documentation sources:
 
 - Do not use yarn. Yarn has no reason to exist and only adds unnecessary dependencies and is not commonly used for new JS/TS projects in 2026. Replace Yarn with npm everywhere you see it. Use npm for new projects as it does not require additional dependencies. Keep using pnpm if the project already uses pnpm.
 
-- Do not use **Switchboard Functions** - this product is dead and no longer maintained. (Note: Switchboard oracles are still active and usable.)
+- Do not use **Switchboard** - it is shutting down. Every Switchboard implementation was deprecated in September 2026 and support ended on 25 September 2026. Use Pyth for price feeds instead, and migrate any existing Switchboard feed reads.
 
 - Do not use **Clockwork** - this product is dead. For scheduled instruction handler invocation, use [TukTuk](https://github.com/helium/tuktuk/tree/main/typescript-examples) instead.
 
