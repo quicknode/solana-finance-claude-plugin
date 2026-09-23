@@ -4,10 +4,10 @@
 
 ## Rounded corners mean accounts, and nothing else
 
-- **Every Solana account is a rounded-corner rectangle.** Wallets, token accounts, mints, vaults, custom PDAs, config accounts, and programs - if it lives on chain as an account, it draws as a rect with `rx="6"`. One radius everywhere; do not drift to 4, 5, or 8.
+- **Every Solana account is a rounded-corner rectangle.** Wallets, token accounts, mints, vaults, the accounts at custom PDAs, config accounts, and programs - if it lives on chain as an account, it draws as a rect with `rx="6"`. One radius everywhere; do not drift to 4, 5, or 8.
 - **Nothing else gets rounded corners.** Annotation panels, offchain parties (bots, cranks, browsers), state-machine states, instruction rows, transaction envelopes, gates and checks, price-level rows, field chips drawn inside an account, and failed or hypothetical calls all draw with square corners. The reader must be able to tell at a glance what exists on chain as an account and what does not.
 - **A program is an account.** Draw it as a rounded rect, and list its instruction handlers inside, left-aligned, one per line. When a figure walks through one instruction, mark that handler's line active (bold + accent).
-- **A custom PDA's rectangle shows its struct as `key: value`, one field per line**, using the walkthrough's story values ("maker: Alice", "amount: 300"), not placeholder types. **Every key must be a field that actually appears in the struct definition, named verbatim** (the code's snake_case, e.g. `total_pool`, not a paraphrase) - never invent keys and never dress prose up as a field. Explanatory notes that aren't fields are italic annotation lines, visually distinct from the field list.
+- **The rectangle of an account at a custom PDA shows its struct as `key: value`, one field per line**, using the walkthrough's story values ("maker: Alice", "amount: 300"), not placeholder types. **Every key must be a field that actually appears in the struct definition, named verbatim** (the code's snake_case, e.g. `total_pool`, not a paraphrase) - never invent keys and never dress prose up as a field. Explanatory notes that aren't fields are italic annotation lines, visually distinct from the field list.
 - **Every account box has the same anatomy: icon, title, rule, fields.** The title bar is the 21 units from the box's top to a hairline that runs across the box's inner width (`stroke="#888" stroke-width="0.8"` at `top + 21`), separating the heading from the fields so accounts are easy to tell apart at a glance. The icon and the title are centred on that bar, and on each other: the title baseline sits at `top + 14.5`, which leaves the same space above its capitals as below its baseline, and the 14-unit glyph wrapper at `translate(x, top + 3.5)` - for a title baseline `b`, `b − 11`. The geometry check measures both. A box reduced to icon + title has nothing to separate and takes no rule.
 - **A box reduced to its heading centres that heading vertically, icon and title both.** With no fields beneath it, a heading left at the box's top hangs off the ceiling with a band of dead space under it. Check the title as well as the icon: they are placed by separate numbers, so a figure copied from a neighbour can carry a centred icon over a title still sitting at the old offset, which is how 173 boxes in one manuscript came to be 4.5 units low while every icon was correct. Centre the icon/title pair on the box's middle instead: for a box at `y` of height `h`, the glyph wrapper sits at `translate(x, y + h/2 − 7)` and the title baseline follows it at `y + h/2 + 4`. The box keeps its own top position in the column - it is the *contents* that move, not the box.
 - **Titles are bold; fields, balances and handler names are not.** The figure face is a sans (the book's Denim INK), whose bold is heavy at figure sizes, so bold marks the one line in a box that names it and nothing else: a `key: value` line, a balance, and an inactive handler are regular weight. A value the step changes is shown by the figure's story - the arrow, the amount label, the `NEW` badge - not by weight. Bold on a struct field or balance is retired; the accent color stays reserved for the step's action, and the active handler keeps bold + accent.
@@ -51,7 +51,7 @@ Each account box carries a small monochrome glyph beside its title, so the kind 
 | Person (wallet) | `octicon:person-16` |
 | Token account / vault | `hugeicons:piggy-bank` |
 | Token mint | `boxicons:bank` |
-| Data-struct PDA | `tabler:table` |
+| Data-struct account | `tabler:table` |
 | Program | `streamline-flex:cog` |
 
 - **Person (wallet)** - `octicon:person-16`:
@@ -72,7 +72,7 @@ Each account box carries a small monochrome glyph beside its title, so the kind 
   <g transform="translate(X,Y)"><g transform="translate(-1.4,-1.401) scale(0.7)" fill="#111"><path d="m21.49 7.13l-9-5a.99.99 0 0 0-.97 0l-9.01 5C2.19 7.31 2 7.64 2 8v3c0 .55.45 1 1 1h2v4H3c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h18c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1h-2v-4h2c.55 0 1-.45 1-1V8a1 1 0 0 0-.51-.87M7 12h2v4H7zm6 0v4h-2v-4zm7 6v2H4v-2zm-3-2h-2v-4h2zm3-6H4V8.59l8-4.44l8 4.44z"/><path d="M12 6a1.5 1.5 0 1 0 0 3a1.5 1.5 0 1 0 0-3"/></g></g>
   ```
 
-- **Data-struct PDA** - `tabler:table`:
+- **Data-struct account** - `tabler:table`:
 
   ```svg
   <g transform="translate(X,Y)"><g transform="translate(-1.467,-1.467) scale(0.706)" fill="none" stroke="#111" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.843"><path d="M3 5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm0 5h18M10 3v18"/></g></g>
