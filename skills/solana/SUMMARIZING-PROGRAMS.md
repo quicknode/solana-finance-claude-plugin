@@ -74,9 +74,14 @@ Fee generated: 1 USDC  (250 × 3 = 750; 750 × 25 bps ÷ 10,000 = 1.875 → 1, r
 
 Reference real comparable programs (e.g. **Kamino Lend**, **MarginFi**, **Save**) and use **current** names (Save, not Solend). Don't cite dead, hacked, or irrelevant projects, and don't reach to other ecosystems for the comparison.
 
-## Push back on an incomplete program - don't disclaim it
+## Fix a flawed program - don't document the flaw
 
-- **If a program isn't production-ready, fix it, don't paper over it.** When a feature is missing or a participant has no incentive to take part (e.g. the market operator earns nothing), say so and offer to add it - a disclaimer is not a substitute for a working design.
+Writing about a program is a close reading of it, so it is where its defects surface. When one does, the deliverable changes: the fix to the program comes first, and the explanation describes the fixed program.
+
+- **A defect you can describe is a defect you can fix.** An exploitable path (a donation that inflates the share price, a rounding direction that favours the user), a resource that can fill up and stop the program (an order book with no eviction or expiry, so resting orders block every new one), a missing feature, or a participant with no incentive to take part (the market operator earns nothing) - each is a bug report against the program, not material for the explanation. Don't write the "known limitations" paragraph, the "an attacker could..." warning, the "a production version would add..." aside, or the "left as an exercise" note. Each of those is the _A caveat is not a fix_ rule from [SKILL.md](SKILL.md) applied to prose.
+- **Fix it where the program lives.** Change the program's code in its own repository, add a test that runs the attack or fills the resource and asserts the program now holds, run the project's tests, and open a pull request. When the program lives in a different repository from the explanation, that pull request comes first, and the explanation follows it, so the prose never describes code that was never shipped.
+- **Then describe the defense, not the hole.** Once the fix exists, the explanation says what the program does and names the test that proves it: "a donation changes a balance and nothing the handlers read; `test_donation_does_not_inflate_share_price` runs the attack". Teaching an attack class is still welcome when the program demonstrably defends against it; describing an attack the program is still open to is not.
+- **Stop and ask only when the fix needs a decision you can't make** - a change of economic design, an account layout change that breaks deployed state, a trade-off between two defenses. Say what you found, propose the fix, and ask which way to go. "It would take a while" is not such a decision.
 - **Deliberate test-only scaffolding is different** and should simply be labelled as such - e.g. a mock price account standing in for a real Pyth feed in tests. Distinguish "missing functionality" (fix it) from "test stand-in" (document it).
 
 ## Finish the summary with where everyone ended up
