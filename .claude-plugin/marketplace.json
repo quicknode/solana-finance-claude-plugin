@@ -10,7 +10,7 @@
     {
       "name": "solana-finance",
       "source": "./",
-      "description": "Solana finance rules for Claude Code: Anchor, Quasar, Rust and TypeScript, with onchain math, custody, oracle freshness and slippage checks."
+      "description": "Develop financial products as Solana Programs in Anchor 1, 2 or Quasar. The companion plugin to the book \"Building Financial Software on Solana\"."
     }
   ]
 }
