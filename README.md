@@ -2,7 +2,7 @@
 
 ![Quicknode Solana Finance Claude Skill](assets/banner.png)
 
-A Claude Code plugin for creating and editing Solana projects, specifically Rust projects in Anchor and Quasar, with a focus on:
+Develop financial products as Solana Programs in Anchor 1, 2 or Quasar. The companion plugin to the book [*Building Financial Software on Solana*](https://solanabook.org), with a focus on:
 
 - Accuracy, consistency and security for financial software
 - Maintainability, readability, and minimal code
@@ -53,6 +53,7 @@ Once installed, the skill automatically applies when Claude Code works on Solana
 ```
 .claude-plugin/plugin.json   # Plugin manifest (name, author, version)
 .claude-plugin/marketplace.json  # Marketplace manifest, so /plugin marketplace add accepts this repo
+.claude-plugin/icon.png         # Listing icon for Anthropic's directory
 skills/solana/               # The skill
   SKILL.md                   # Skill entry point + general guidelines
   ANCHOR.md  RUST.md  QUASAR.md  TYPESCRIPT.md   # Language/framework references
