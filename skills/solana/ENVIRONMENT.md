@@ -4,11 +4,7 @@ How to get a working Solana toolchain in a fresh Linux container (CI runners, Cl
 
 ## Agave (Solana CLI) and cargo-build-sbf
 
-```bash
-curl -sSfL https://release.anza.xyz/stable/install -o /tmp/solana-install.sh
-sh /tmp/solana-install.sh
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-```
+Install the Solana CLI, which includes `cargo-build-sbf`, by following Anza's instructions at https://docs.anza.xyz/cli/install, and add its `bin` directory to `PATH` as they describe.
 
 `cargo build-sbf` downloads its platform-tools toolchain on first use. In environments with a TLS-intercepting proxy this download fails with `invalid peer certificate: UnknownIssuer`, because `cargo-build-sbf` uses its own certificate store rather than the system's. Work around it by downloading with `curl` (which trusts the system store) and placing the archive where `cargo-build-sbf` caches it:
 
