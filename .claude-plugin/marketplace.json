@@ -5,7 +5,7 @@
     "name": "Quicknode",
     "url": "https://www.quicknode.com"
   },
-  "description": "Quicknode's plugins for Claude: Solana development with a focus on financial correctness.",
+  "description": "Develop financial products as Solana Programs in Anchor 1, 2 or Quasar. The companion plugin to the book \"Building Financial Software on Solana\".",
   "plugins": [
     {
       "name": "solana-finance",
