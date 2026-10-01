@@ -5,6 +5,7 @@
     "name": "Quicknode",
     "url": "https://www.quicknode.com"
   },
+  "description": "Quicknode's plugins for Claude: Solana development with a focus on financial correctness.",
   "plugins": [
     {
       "name": "solana-finance",
