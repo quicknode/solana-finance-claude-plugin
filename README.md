@@ -53,7 +53,6 @@ Once installed, the skill automatically applies when Claude Code works on Solana
 ```
 .claude-plugin/plugin.json   # Plugin manifest (name, author, version)
 .claude-plugin/marketplace.json  # Marketplace manifest, so /plugin marketplace add accepts this repo
-.claude-plugin/icon.png         # Listing icon for Anthropic's directory
 skills/solana/               # The skill
   SKILL.md                   # Skill entry point + general guidelines
   ANCHOR.md  RUST.md  QUASAR.md  TYPESCRIPT.md   # Language/framework references
