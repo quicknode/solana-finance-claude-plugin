@@ -6,15 +6,7 @@ How to get a working Solana toolchain in a fresh Linux container (CI runners, Cl
 
 Install the Solana CLI, which includes `cargo-build-sbf`, by following Anza's instructions at https://docs.anza.xyz/cli/install, and add its `bin` directory to `PATH` as they describe.
 
-`cargo build-sbf` downloads its platform-tools toolchain on first use. In environments with a TLS-intercepting proxy this download fails with `invalid peer certificate: UnknownIssuer`, because `cargo-build-sbf` uses its own certificate store rather than the system's. Work around it by downloading with `curl` (which trusts the system store) and placing the archive where `cargo-build-sbf` caches it:
-
-```bash
-# Match the version cargo-build-sbf asks for in its error message (vX.YY).
-PT_VERSION=v1.53
-curl -sSfL "https://github.com/anza-xyz/platform-tools/releases/download/${PT_VERSION}/platform-tools-linux-x86_64.tar.bz2" -o /tmp/platform-tools.tar.bz2
-mkdir -p ~/.cache/solana/${PT_VERSION}/platform-tools
-tar -xjf /tmp/platform-tools.tar.bz2 -C ~/.cache/solana/${PT_VERSION}/platform-tools
-```
+`cargo build-sbf` downloads its platform-tools toolchain on first use. In environments with a TLS-intercepting proxy this download fails with `invalid peer certificate: UnknownIssuer`, because `cargo-build-sbf` uses its own certificate store rather than the system's. Work around it by fetching the same archive with a tool that trusts the system store: take the version from the error message (vX.YY), download `platform-tools-linux-x86_64.tar.bz2` for that version from Anza's platform-tools releases at https://github.com/anza-xyz/platform-tools/releases, and extract it into `~/.cache/solana/<version>/platform-tools`, which is where `cargo-build-sbf` looks for it.
 
 Different tools pin different platform-tools versions (the Quasar CLI pins its own); repeat the download for each version requested in error messages.
 
