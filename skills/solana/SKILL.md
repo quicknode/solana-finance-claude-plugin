@@ -277,6 +277,8 @@ const foo = getFoo();
 - Functions should be verby, like `calculateFoo` or `getBar`
 - Avoid abbreviations, use full words (e.g., use `context` rather than `ctx`). Never use `e` for something thrown, use `thrownObject`, never use `v` when you mean `value`. There is almost no case where a single character variable is a good idea outside math (eg `p` and `q` for cryptography).
 - Name a transaction some variant of `transaction`. Name instructions some variant of `instruction`. Name signatures some variant of `signature`. Do not confuse them - eg if the type looks like an instruction, you should not call it a 'transaction' because that is deceptive.
+- A name must make sense inside the thing that holds it, and one word means one thing per program. An account struct `OptionContract` with a field `contracts` reads as a contract that contains contracts, because "contract" names both the account and a unit inside it. Pick one meaning and rename the other.
+- Store the quantities the program uses, not the factors it multiplies back together. If every handler computes `contracts * underlying_per_contract`, the account should store `underlying_amount`. Fields copied from traditional finance's conventions (contract sizes, lots, per-unit prices) are the usual source: keep one only if the program acts on it separately, for example by exercising or transferring part of an option.
 
 You can still add comments for additional context, just be careful to avoid comments that are explaining things that would be better conveyed by good variable naming.
 
