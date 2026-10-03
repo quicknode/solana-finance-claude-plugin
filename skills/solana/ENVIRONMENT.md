@@ -15,7 +15,7 @@ Different tools pin different platform-tools versions (the Quasar CLI pins its o
 Install from crates.io (a long compile, roughly ten minutes):
 
 ```bash
-cargo install anchor-cli --locked
+cargo install anchor-cli --version 1.2.0 --locked
 ```
 
 `anchor test` reads the wallet path from `Anchor.toml` (`~/.config/solana/id.json` by default), so create a throwaway keypair once per container:

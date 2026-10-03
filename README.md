@@ -33,7 +33,7 @@ Add this repository as a marketplace, then install the plugin from it:
 You can also install just the skill directly:
 
 ```bash
-npx skills add https://github.com/quicknode/solana-finance-claude-plugin
+npx skills@1.7.0 add https://github.com/quicknode/solana-finance-claude-plugin
 ```
 
 This installs the skill into the current project's `.claude/skills/` directory. Add `-g` to install it for every project, under `~/.claude/skills/`, and `--agent claude-code` if the CLI detects other agents you do not want it installed for.

@@ -30,7 +30,7 @@ Favor `async`/`await` and `try/catch` over `.then()` or `.catch()` or using call
 - There is no need to use offsets that you set to decode Solana account data - either download an npm package for the program like `@solana-program/token` for the token program or make one using Codama.
 - In Solana Kit, you make instructions by making TS clients from IDLs using Codama. You can easily make Codama clients for installed IDLs using:
 
-`npx create-codama-clients`
+`npx create-codama-clients@1.0.0`
 
 - Do not use the `bs58` npm package.
 
