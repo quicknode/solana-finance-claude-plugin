@@ -39,6 +39,7 @@ An audience may not have read the chapters before this one. Open on the people a
 - **A step has a title with one highlighted keyword**: `Maria runs [collect_fees()]`, `Bob pays Alice the [premium]`. The step number sits in a corner as `// STEP n`.
 - **Its caption is at most four lines**, and may keep line breaks for a list of short facts.
 - **The running handler sits on a full-width accent band with a ▶ marker, in bold.** Set it in a face that has a real bold weight: a monospace face without one gets a made-up bold from the browser, which is too faint to find from the back of a room. Only the running handler is bold; handler names elsewhere are set like the words around them. When a handler calls another program, that program's handler lights too.
+- **Every derived account has its own seed list** for the whole animation, as in a figure (DIAGRAMS.md): two with the same seeds are one address. Have the engine refuse a scene that repeats one.
 - **Every account a step touches is drawn in full** before the step plays on it: an arrow never lands on a faded slab, and a field never changes inside one.
 
 ## Motion means value moved
