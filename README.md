@@ -60,4 +60,5 @@ skills/solana/               # The skill
   ENVIRONMENT.md             # Toolchain setup for CI and remote containers
   SUMMARIZING-PROGRAMS.md    # How to explain and summarize programs
   DIAGRAMS.md                # Account diagram (SVG figure) conventions
+  ANIMATIONS.md              # Animating account diagrams for a screen
 ```
