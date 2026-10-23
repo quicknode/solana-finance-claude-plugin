@@ -52,11 +52,12 @@ An audience may not have read the chapters before this one. Open on the people a
 ## Other possible endings
 
 - **An alternative ending branches off the main story and returns to it.** The cancelled offer starts from the open offer; the expired option starts from the purchase, not from the exercise before it. The jump between them fades out and back in, so it never reads as the program doing something.
-- **Open such a step plainly**: "It's possible that nobody takes the offer", "It's possible NVDAx stays at $165". Not "Another future", and not "Future B".
+- **Each ending opens on a title slide that names it**: "Outcome 1: nobody takes Alice's offer", "Outcome 2: Bob takes Alice's offer", and "Back to Outcome 1: Alice collects the strike" when the story returns. A brief aside that is not an ending opens on "What if NVIDIA reprices to $170?". The steps after the slide go straight to what happens; the slide has already said it is one possibility. Never "Another future", and never "Future B".
 
 ## Slides between the steps
 
 - **One icon means one idea throughout a talk.** Reuse it where the idea comes back, and never give it to anything else.
+- **A highlight takes the saturated form of its background's hue**: green on a mint card or slide, purple on a lavender one, and a person's name badge does the same.
 - **Animate a change that is the point of the slide.** When a price rallies and a fund's weights drift, the bar grows; when the losing side of a bet pays the winners, the loser's bar drains into theirs. Open on the state before, hold it long enough to read, then move.
 - **A part too thin to hold its words is drawn at its true width**, with its label outside the bar and an arrow to it.
 
