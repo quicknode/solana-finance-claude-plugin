@@ -348,6 +348,8 @@ For setting up a Solana toolchain in CI or a fresh remote container (Agave, plat
 
 When you draw diagrams of Solana accounts (SVG figures for books, docs sites, or presentations): see [DIAGRAMS.md](DIAGRAMS.md).
 
+When you animate those diagrams for a screen (a talk, a docs site, a video): see [ANIMATIONS.md](ANIMATIONS.md), plus DIAGRAMS.md.
+
 ## Git commits
 
 Do not add "Co-Authored-By: Claude" or similar attribution when creating git commits.
