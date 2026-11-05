@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Looping on Solana</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* The on-screen graphics for the "Looping on Solana" script, in the look of
+   the Quicknode Solana Finance Keynote (the book's animations/deck.css):
+   Helvetica Neue for words, a mono face for tags, the green and purple
+   highlights, and the four card colours. Sizes are in cqw, hundredths of the
+   stage's width, so a slide scales as one picture. Single dark look by
+   design: the stage is the black frame the talks run in. */
+:root {
+  --black: #040406;
+  --dark: #131313;
+  --slab: #2f2f2f;
+  --paper: #f4f4f4;
+  --white: #fcfcfc;
+  --lavender: #efeafe;
+  --mint: #d9fbda;
+  --green: #95fc86;
+  --purple: #987bf2;
+  --ink: #2a2a2a;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "Andale Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  color-scheme: dark;
+  --mark: url("data:image/png;base64,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");
+  --i-collateral: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAD+SURBVHgB7djhDYIwEAXgp3EARmAERmAERmAENpANGEE3wE0YgREcAVtCorYILWAeDfcl74/pmTtzDURACLGlSKVQqVValW5IM3yWY8cylSfeTf+KHizHzlSYb9zMFTuhG+kWpgJZDrspvUalSvpxLlG5Y3yIDEQt7P2OJ87HIzV64AgEOexfM3ao02fMy16AoDaauHnUlkbtAwSN0UTiUZvCXr1FTliuW/lda+t7ZwROBmALfgCXi9OBa7JHWSG24Ae4wN+ah58LrzsnK8R2yDvgapOXtTmyQmwyAJsMwCYDsMmTeMK/31p7skJsh7wD7H8pvsgKsQU/gBBH9wJO02Ir2U8WHgAAAABJRU5ErkJggg==");
+  --i-cash: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAEOSURBVHgB7ZiNDYMgEIWfTQdgBEZjk7pJuwkjOIIrdAOLIgklooKiIvclLyE5MfeAO38AgiAIomQqa9whL4bcH8gcMnA2z5lYhWsxWaO33gGDrztdYoeoiM+mCAOVRz6Y0ktJQtdPr0ZJIDGdoxi4UjtxL6N2vCaGxfz2MDCXvG2CIZzkBgSWkzeqEU5yA40z/wO90nwc2zGJcJIbcOdzK8aw//0HUrbRrzWOOfPBbF0h6cx/Q+8CG8d2rEE4yY9QjfVFLBBOcgP9SrdY10ZjSG6ghyPzB5lB4L+tSugjtqWYJ/Ob+ytx9Pu+b9EqT5z+SlyCIr6JjyKq5m69A1tb6SFQEZ9N9gYIgiCIsvkBbtW0Hv/y3IsAAAAASUVORK5CYII=");
+  --i-ltv: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJ1SURBVHgB7ZntcdswDIbfbqARsEG1Qb1JuEG0QbRBvIGyQbuB0wncTqBukG7QihfyEpMgA5Bw8iN67nC+s/jxEgApHAXs7HxuvsCOw2bjZt/C7xDM83ezP8F+b/YY7MPxAu82e9rsn9LWzZbNCB+AF34PveiSvetCbtHmcUlEHK5Mzet+UUsQEfdAZAj/+WcPqDvgHlfACzih7LkJl4IluNCXG/PcMF6VM3iPT+hnAr+IE4zg0sZ7jmAHgY9Gdzo58OEl2EPgI90cZULuFWvPS+b0qdq0HxZmIIIdY+F/Qn5KqVOJIA/lEJ5NkC/wJox5V3jObWxVFFLvr4V2hMuQr4KJbpKxS4tIU2mGgrSzK7TjPDUpxEcbBWM/QchB0VGzgJJ4V2g/IN8LBwiYk05Lpa2fJE0hQr/4yAMajtTvykkIL5uYy/9W8UD+Hvoh6JO9TEa00yMeYW7JYXJBmnetRVWveIS51Rs5nbAFC/HNenoXYCm+SU9PClmLb0qhFW2b2Fo8kG/is6ST9hj1aMRraieHhmM0fbsusBNP0NVOSzLmDAEH5Hk3GIj3aGunplKC68hNMkKf85oFODS8xCKzsHPazqGOtHYC8sNkgYL0+Kp5aoZ8s3sI9drJc8vMT1ByRL4XqNC2p15KIeQprPJ+hKvHayG3gGB8kcBtuve+VnHo5MgMah0JAn+xdYQRJ2Zwq6vF0m23qGyQMoAPb4yGg45YTqyFMU8wvtyNHAsTxogsePt6fUH9et0sbUo4lD3XY1YpKYKQ3xj0mPf6VVLmLQjPC2mJiPf4jE7h1p9ZvX3F88K8vf7M6u3XZj/D7yN2dna6+Q90UkEKHblMrgAAAABJRU5ErkJggg==");
+  --i-interest: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADmSURBVHgB7ZgBCoMwDEW/Y/dsdjNv6jZYwUlNW1Obiv9BQKw070sEFSCEEHJnpsS5peCaYXjg4jCAN0/0Z6m8Xn0GOULeMMABpk0JGrNs6kxCop+5f68AJfJuAcKvtPWUrGCAAGu5kFnfyrfob9ogJRcy62t5a3/TBtpMB5TJW/qbNtDktZJG/U0btJRvQk0AbSwEDvJAeQBNPiLoLA+UBSiRjwg6ygP5ADXyEUEn+S9agCPyp1L7Npr6Onp9asZA5EZIMMCdjxz5Jp53jl3gjy1vLh+gZIRG48+ZI+TN5QMQQgi5N28GN9O5snjOdQAAAABJRU5ErkJggg==");
+  --i-liquidation: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGaSURBVHgB7ZjhTYRAEIW/WIElTAnYASXYwdmBdgAl2AF2oB1cCdoBdnAlKJPzEoQ9OJYZWBK+ZH4Aye7Ly8xbAHZ2duZSNPXjVBnOSFM1uIivWIACXMTXnM1xRfBz/4UFKLBxrQ6s444ENi6ZzjMrDK5i4b7QN6FiAQQb9ytWGFzFwv2MlQZXsHF/lcFVLNwPDW5MvTV1zwSE+e4LNmdHSQQW7lesJF6Y737GfPFPRGLh/i1oT3/SF35qKicSwSZ5YvYxMWsJ9wUn8YK/+znnFumK11aaFJMhvN0/YJTxIQRf97vmmO9xbYOxepyxdokRQvyJOfQ+r21RYZzxIWLdPzEs3jzjQwjx7h8nrmkdCpN5ZbyHhUTFK+p4W1Teea7XbhlvQVdYW9QBx4y3IKfv6oUC55i0QL9h2+I+/u5vQrzyzn+BKrxigYy3opvpoWE1z3grdAjHzoSaBGLyGjmJiL8jjnzg2VdTD019kzBHEs/4MUIDW7IRQr9HSjaEfrAkn/FDXN5Ak834MXSAk874MTYtXthITO4sxS9nOesszXnpHQAAAABJRU5ErkJggg==");
+  --i-falls: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA1UlEQVR4nO2XUQqDMBBEl9J7Zm7Wo9ofS+s2m43ZJBqYB36IMzDPgKAIIYQQQkh3sF9LAhHZ9guXLmkA8h2/hMRD3W+ZzEtuLqFJ8n8K0ZNAsH+anhII9pvpIYFgP0xEAkZ3CQkYnSUkYGSXkICRSZX94ZRGwHiWKvsWOjtMwhvv9TFLoDTCG+/1kckOESiN8MZ7fajcMAFrRM34Ul9LDBXQI86Mz/VzEsMFPiNaxv/2LYkpAj2o/brdmhqJ2+NJHHhOnXaky9vUv5TLQQFCCCGEEHIdb/0V6/nYU848AAAAAElFTkSuQmCC");
+  --i-leverage: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAIOSURBVHgB7ZjtccIwDIbf9jpARtAI2aDZBHcCskHZADYgG9ANaCeAThA6AWzQ2ndOAVtJbUdJfjTPnQ4Ilq0vfwWYmZmZmZIHyFFoybU828/MiuGi5WTlU8u7lckxBr5qOWv5jpRay1YLYQKM4WvEG90mozqyRFrEQzKiMDBdUTdOba0RzRxoyOwz81+F7gCsMQDGgD3aI1fi3uAQlNXl+jwk9NfJAXzES/SnBJ+RPYTgysZEjiAHgc9G73JS4NNLkIfAZzo5ywQ/KtKRDxnTlFfSfNgyHRGGh+DPiehSIsSlcmFFipIZPyoLbvTrjraLm3aSTriltIrQ9ZRVS7sF/EhJOeFm4RyqWEQoKvAbkYQTGfy5UIQoruAftLpQGM6JCglL6g5h5XOLwjBOKKe/txAldzPJEYaCvBM5wheTX9y6i1m+FGSdyJAwkd3BY1GQdaLTnkfIU2l5YZ5L3r876VNCtyjELQQcf5bQE6N0wb3RpOWIeKqW7zGQ8/vkNuAcODqKOdIcMFToh7sCfrkNuDnw4fx+xnS4YwcFsoDQeVyApKMEpyhx941FIWETa1j1URaiRtyZ7A53+Ro7C0tmfEIkG/hzgTA8BL+Eo6LfwJ3Ha4x/qe81Jnc3FX9rZsnAv1ZR6IlbSkNlgeBHfwMh9rhGnzAchKsTBwhi0lthnA3NjLHDdJvnzMzMzH/iB8Ohb/DjKuM0AAAAAElFTkSuQmCC");
+}
+
+html, body { margin: 0; height: 100%; background: var(--black); overflow: hidden; }
+body {
+  display: grid; place-items: center; font-family: var(--sans); color: var(--paper);
+  background: var(--black);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+}
+
+/* The frame is 16:9 at the largest size the window allows. */
+#stage {
+  position: relative;
+  width: min(100%, calc((100svh - 56px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  container-type: size;
+  cursor: pointer;
+  overflow: hidden;
+  background: var(--black);
+}
+
+#hint {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  font: 12px var(--sans); color: #8d9196; transition: opacity 0.6s;
+}
+#hint.hidden { opacity: 0; }
+kbd { font-family: inherit; border: 1px solid #444; border-radius: 3px; padding: 0 4px; }
+
+/* ---- Slide frame (deck.css vocabulary) --------------------------------- */
+
+.slide {
+  position: absolute; inset: 0; box-sizing: border-box; color: var(--ink);
+  transition: opacity 0.35s;
+}
+.slide.hidden { opacity: 0; pointer-events: none; }
+.slide.light { background: var(--paper); }
+.slide.dotted {
+  background-color: var(--paper);
+  background-image: radial-gradient(#d6d6d6 0.09cqw, transparent 0.1cqw);
+  background-size: 2.4cqw 2.4cqw;
+}
+.slide.lavender { background: var(--lavender); }
+.slide.dark { background: var(--dark); color: #f0f0f0; }
+.slide.dark.dotted {
+  background-color: var(--black);
+  background-image: radial-gradient(#1d1d22 0.1cqw, transparent 0.11cqw);
+  background-size: 2.4cqw 2.4cqw;
+}
+
+.bar {
+  box-sizing: border-box; height: 3.3cqw;
+  display: flex; align-items: center; gap: 1.6cqw;
+  padding: 0 2.4cqw 0 3cqw;
+  border-bottom: 0.12cqw solid #555;
+  font: 0.7cqw var(--mono); letter-spacing: 0.08cqw; text-transform: uppercase;
+}
+.bar .handle { margin-left: auto; }
+.light .bar, .dotted .bar { background: #e6e6e6; color: #444; }
+.lavender .bar { background: var(--lavender); color: #2b2160; }
+.dark .bar { background: #2b2b2b; color: #bdbdbd; }
+.dark.dotted .bar { background: transparent; }
+
+.mark {
+  display: inline-block; width: 1.25cqw; aspect-ratio: 257 / 219;
+  background: currentColor;
+  -webkit-mask: var(--mark) center / contain no-repeat;
+  mask: var(--mark) center / contain no-repeat;
+}
+
+.body { padding: 4.5cqw 6cqw; }
+
+mark { background: var(--green); color: var(--ink); padding: 0 0.3cqw; }
+mark.purple { background: var(--purple); color: #fff; }
+.lavender mark { background: var(--purple); color: #fff; }
+
+.tag {
+  display: inline-block;
+  font: 1.1cqw var(--mono); letter-spacing: 0.1cqw; text-transform: uppercase;
+  padding: 0.35cqw 0.8cqw;
+}
+.tag.green { background: var(--green); color: #134d1a; }
+
+.slide-heading { font-weight: 400; font-size: 3cqw; line-height: 1.2; margin: 0; }
+.slide-sub { font-size: 1.3cqw; color: #666; margin: 0.8cqw 0 0; line-height: 1.4; }
+.dark .slide-sub { color: #a8a8a8; }
+
+.tpl-icon { width: 2.2cqw; height: 2.2cqw; display: block; background-size: contain; background-repeat: no-repeat; background-position: center; }
+.dark .tpl-icon { filter: invert(1); }
+
+/* Build steps: a .build waits unseen until its step. */
+.build { transition: opacity 0.4s, transform 0.4s; }
+.build.waiting { opacity: 0; transform: translateY(1cqw); }
+@media (prefers-reduced-motion: reduce) {
+  .slide, .build, .seg, .ladder .col .fill { transition: none !important; }
+}
+
+/* ---- Title ------------------------------------------------------------- */
+
+.title-slide h1 {
+  font-weight: 400; font-size: 6.4cqw; line-height: 1.12; letter-spacing: -0.12cqw;
+  margin: 2.2cqw 0 0; color: #f0f0f0;
+}
+.title-slide .logo {
+  position: absolute; right: 2.6cqw; bottom: 3.6cqw;
+  width: 6cqw; aspect-ratio: 1; background: var(--green);
+  display: grid; place-items: center; color: #111;
+}
+.title-slide .logo .mark { width: 4cqw; }
+
+/* ---- The loop: a stack of wide icon cards (split layout) --------------- */
+
+.split { display: grid; grid-template-columns: 30% 1fr; gap: 5cqw; padding-top: 5.5cqw; }
+.stack { display: flex; flex-direction: column; gap: 1.4cqw; }
+.row-card {
+  background: var(--white); display: grid; grid-template-columns: auto 1fr; gap: 2.4cqw;
+  align-items: center; padding: 2cqw 2.6cqw;
+}
+.row-card .name { font-size: 1.6cqw; line-height: 1.3; }
+.row-card .text { font-size: 1.2cqw; line-height: 1.45; opacity: 0.8; margin-top: 0.3cqw; }
+.row-card .tpl-icon { filter: none; }
+
+/* ---- The shrinking series ---------------------------------------------- */
+
+.series-slide .layout { display: grid; grid-template-columns: 1fr 24cqw; gap: 4cqw; align-items: end; margin-top: 2.6cqw; }
+.loops { display: flex; align-items: flex-end; gap: 1.6cqw; height: 26cqw; }
+.loops .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.loops .amount { font: 1.5cqw var(--mono); color: #f0f0f0; margin-bottom: 0.6cqw; text-align: center; }
+.loops .bar-fill { background: var(--green); }
+.loops .lbl { font: 0.95cqw var(--mono); letter-spacing: 0.08cqw; color: #8d9196; text-transform: uppercase; margin-top: 0.8cqw; text-align: center; }
+.loops .ghost .bar-fill { background: transparent; border: 0.14cqw dashed #555; }
+.loops .ghost .amount { color: #8d9196; }
+.formula {
+  background: var(--slab); color: #f0f0f0; padding: 2.6cqw;
+}
+.formula .eq { font: 2cqw var(--mono); line-height: 1.5; }
+.formula .eq .big { font-size: 3.4cqw; color: var(--green); }
+.formula .note { font-size: 1.15cqw; line-height: 1.45; opacity: 0.8; margin-top: 1.2cqw; }
+
+/* ---- Exposure: the allocation bar --------------------------------------- */
+
+.alloc { display: flex; gap: 0.5cqw; margin-top: 4.6cqw; }
+.seg { flex-basis: 0; min-width: 12cqw; display: flex; flex-direction: column; transition: flex-grow 1.6s ease-in-out; }
+.seg .pct { font: 1.4cqw var(--mono); margin-bottom: 0.8cqw; color: #bdbdbd; }
+.seg-box {
+  flex: 1; min-height: 11cqw; padding: 2cqw 2.2cqw; display: flex; flex-direction: column;
+  justify-content: center; gap: 0.4cqw;
+}
+.seg-box .tpl-icon { margin-bottom: 0.8cqw; filter: none; }
+.seg-box .name { font-size: 2cqw; }
+.seg-box .text { font-size: 1.25cqw; opacity: 0.8; }
+.seg-box.mint { background: var(--mint); color: var(--ink); }
+.seg-box.lavender { background: var(--lavender); color: var(--ink); }
+.drop { font-size: 1.75cqw; line-height: 1.5; margin: 3.4cqw 0 0; color: #f0f0f0; }
+
+/* ---- The LTV ladder ------------------------------------------------------ */
+
+.ladder { position: relative; display: flex; align-items: flex-end; gap: 3cqw; height: 26cqw; margin-top: 2.6cqw; padding-right: 16cqw; }
+.ladder .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.ladder .pct { font: 1.6cqw var(--mono); color: #f0f0f0; margin-bottom: 0.6cqw; text-align: center; }
+.ladder .pct .d { font-size: 1.05cqw; color: #8d9196; margin-left: 0.6cqw; }
+.ladder .fill { background: var(--green); }
+.ladder .col.gone .fill { background: var(--purple); }
+.ladder .col.gone .pct { color: #b9a4ff; }
+.ladder .lbl {
+  font: 0.95cqw var(--mono); letter-spacing: 0.08cqw; color: #8d9196; text-transform: uppercase;
+  height: 1.4cqw; line-height: 1.4cqw; margin-top: 0.8cqw; text-align: center;
+}
+/* The liquidation line: 65 on the ladder's 0-75% scale, measured from the
+   bars' shared baseline above the 2.2cqw label row. Bar fills use the same
+   scale, as cqw heights: (LTV / 75) * 23.8cqw. */
+.liq-line {
+  position: absolute; left: 0; right: 16cqw;
+  bottom: calc(2.2cqw + 23.8cqw * 0.8667);
+  border-top: 0.18cqw dashed #777;
+}
+.liq-line .liq-lbl {
+  position: absolute; right: 0; top: -2.4cqw;
+  font: 1.05cqw var(--mono); letter-spacing: 0.1cqw; color: #bdbdbd; text-transform: uppercase;
+}
+
+/* ---- Risks: the grid of cards -------------------------------------------- */
+
+.grid { display: grid; gap: 1.4cqw; margin-top: 3cqw; grid-template-columns: repeat(3, 1fr); }
+.grid-card {
+  background: var(--white); display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 0.6cqw; padding: 2.2cqw 2cqw;
+}
+.grid-card .tpl-icon { margin-bottom: 0.8cqw; filter: none; }
+.grid-card .name { font-size: 1.6cqw; line-height: 1.3; }
+.grid-card .text { font-size: 1.2cqw; line-height: 1.45; opacity: 0.8; margin-top: 0.3cqw; }
+
+/* ---- The simulator ------------------------------------------------------- */
+
+.sim { display: grid; grid-template-columns: 36cqw 1fr; gap: 4cqw; margin-top: 2.2cqw; }
+.sim label { display: block; font: 1cqw var(--mono); text-transform: uppercase; letter-spacing: 0.08cqw; color: #bdbdbd; margin-bottom: 1.3cqw; }
+.sim label output { float: right; color: #f0f0f0; }
+.sim input[type="range"] { width: 100%; accent-color: var(--green); margin-top: 0.4cqw; display: block; }
+.sim .buttons { display: flex; flex-wrap: wrap; gap: 0.8cqw; margin: 0.4cqw 0 1.4cqw; }
+.sim button {
+  font: 0.95cqw var(--mono); letter-spacing: 0.08cqw; text-transform: uppercase;
+  padding: 0.55cqw 1cqw; border: 0.12cqw solid #666; background: transparent; color: #e0e0e0; cursor: pointer;
+}
+.sim button:hover:not(:disabled) { border-color: #aaa; }
+.sim button:disabled { opacity: 0.35; cursor: default; }
+.sim #sim-liq:not(:disabled) { background: var(--purple); border-color: var(--purple); color: #fff; }
+#sim-note { font-size: 1.15cqw; line-height: 1.45; color: #bdbdbd; min-height: 3.4cqw; margin: 0; }
+.readouts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4cqw 2cqw; }
+.readouts .k { font: 0.85cqw var(--mono); text-transform: uppercase; letter-spacing: 0.08cqw; color: #8d9196; }
+.readouts .v { font: 1.7cqw var(--mono); color: #f0f0f0; font-variant-numeric: tabular-nums; }
+.sim .status { margin: 1.6cqw 0 0; }
+.tag.outline { border: 0.12cqw solid #888; color: #e0e0e0; }
+.tag.purple { background: var(--purple); color: #fff; }
+.vlbl { font: 0.9cqw var(--mono); text-transform: uppercase; letter-spacing: 0.08cqw; color: #8d9196; margin: 2cqw 0 0.6cqw; }
+.vlbl:first-child { margin-top: 0.4cqw; }
+.stackbar { display: flex; height: 6.4cqw; background: #222; }
+.stackbar .segm {
+  display: flex; align-items: center; padding: 0 1cqw; box-sizing: border-box;
+  font: 1.05cqw var(--mono); color: var(--ink); white-space: nowrap; overflow: hidden;
+  transition: width 0.3s;
+}
+.stackbar .equity { background: var(--mint); }
+.stackbar .debtseg { background: var(--lavender); }
+.gauge { position: relative; height: 2.6cqw; background: #222; margin-top: 2.2cqw; }
+.gauge .fill { height: 100%; width: 0; background: var(--green); transition: width 0.3s, background 0.3s; }
+.gauge.hot .fill { background: var(--purple); }
+.gauge .mark65 { position: absolute; left: 86.67%; top: -0.7cqw; bottom: -0.7cqw; border-left: 0.18cqw dashed #999; }
+.gauge .glbl { position: absolute; left: 86.67%; top: -2.3cqw; transform: translateX(-50%); font: 0.9cqw var(--mono); letter-spacing: 0.08cqw; color: #bdbdbd; text-transform: uppercase; white-space: nowrap; }
+
+/* ---- Statement ----------------------------------------------------------- */
+
+.statement {
+  position: absolute; inset: 3.3cqw 0 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; padding: 0 12cqw;
+}
+.statement h2 { font-weight: 400; font-size: 4.6cqw; line-height: 1.2; margin: 0; }
+.statement p { font-size: 1.6cqw; color: #a8a8a8; margin: 2cqw 0 0; line-height: 1.45; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- 1 · Title -->
+  <section class="slide dark dotted title-slide">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body">
+      <span class="tag green">Leverage from a lending market</span>
+      <h1>How <mark>looping</mark> works<br>on Solana</h1>
+    </div>
+    <div class="logo"><span class="mark"></span></div>
+  </section>
+
+  <!-- 2 · The loop itself -->
+  <section class="slide dotted hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body split">
+      <div>
+        <h2 class="slide-heading">One position, built in <mark>loops</mark></h2>
+        <p class="slide-sub">A thousand USDC becomes nearly two thousand dollars of NVIDIA. The stock is the collateral; the dollars are the debt.</p>
+      </div>
+      <div class="stack">
+        <div class="row-card build">
+          <span class="tpl-icon" style="background-image: var(--i-collateral)"></span>
+          <div><div class="name">Buy NVDAx and deposit it</div><div class="text">Tokenized NVIDIA stock goes into the lending market as collateral</div></div>
+        </div>
+        <div class="row-card build">
+          <span class="tpl-icon" style="background-image: var(--i-cash)"></span>
+          <div><div class="name">Borrow USDC against it</div><div class="text">Up to the market's loan-to-value: 50% of what the collateral is worth</div></div>
+        </div>
+        <div class="row-card build">
+          <span class="tpl-icon" style="background-image: var(--i-leverage)"></span>
+          <div><div class="name">Buy more NVDAx, deposit again, repeat</div><div class="text">Each round the position grows — and the next borrow shrinks</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · The shrinking series -->
+  <section class="slide dark series-slide hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body">
+      <h2 class="slide-heading">Every loop <mark>shrinks</mark></h2>
+      <p class="slide-sub">At 50% loan-to-value each borrow is half the one before: a geometric series, and it converges</p>
+      <div class="layout">
+        <div class="loops">
+          <div class="col build"><div class="amount">$1,000</div><div class="bar-fill" style="height: 71.4%"></div><div class="lbl">// Deposit</div></div>
+          <div class="col build"><div class="amount">$500</div><div class="bar-fill" style="height: 35.7%"></div><div class="lbl">// Loop 01</div></div>
+          <div class="col build"><div class="amount">$250</div><div class="bar-fill" style="height: 17.9%"></div><div class="lbl">// Loop 02</div></div>
+          <div class="col build"><div class="amount">$125</div><div class="bar-fill" style="height: 8.9%"></div><div class="lbl">// Loop 03</div></div>
+          <div class="col ghost build"><div class="amount">&hellip;</div><div class="bar-fill" style="height: 4.5%"></div><div class="lbl">// &rarr; $0</div></div>
+        </div>
+        <div class="formula build">
+          <div class="eq">1 &divide; (1 &minus; 0.50)<br>= <span class="big">2&times;</span></div>
+          <div class="note">The most exposure 50% LTV can ever build, however many loops you run</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Actual versus perceived exposure -->
+  <section class="slide dark hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body">
+      <h2 class="slide-heading">It feels like a $1,000 bet. You hold <mark>$1,900</mark> of NVIDIA</h2>
+      <p class="slide-sub">Stopped short of the 2&times; cap: $1,900 of collateral against a $900 loan</p>
+      <div class="alloc">
+        <div class="seg build" style="flex-grow: 1000">
+          <div class="pct">$1,000</div>
+          <div class="seg-box mint">
+            <span class="tpl-icon" style="background-image: var(--i-collateral)"></span>
+            <div class="name">Your stake</div>
+            <div class="text">The USDC you started with</div>
+          </div>
+        </div>
+        <div class="seg build" style="flex-grow: 900">
+          <div class="pct">$900</div>
+          <div class="seg-box lavender">
+            <span class="tpl-icon" style="background-image: var(--i-cash)"></span>
+            <div class="name">Borrowed</div>
+            <div class="text">USDC debt, owed to the market</div>
+          </div>
+        </div>
+      </div>
+      <p class="drop build">A 10% drop in NVIDIA is not $100. It is $190 &mdash; <mark class="purple">19% of your money</mark></p>
+    </div>
+  </section>
+
+  <!-- 5 · The LTV ladder -->
+  <section class="slide dark hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body">
+      <h2 class="slide-heading">Falling prices eat your margin at an <mark>accelerating</mark> rate</h2>
+      <p class="slide-sub">The debt stays $900. The collateral is NVIDIA. LTV = debt &divide; collateral, and it rises as the price falls</p>
+      <div class="ladder">
+        <div class="liq-line"><span class="liq-lbl">Liquidation &middot; 65%</span></div>
+        <div class="col build"><div class="pct">47%</div><div class="fill" style="height: 15cqw"></div><div class="lbl">NVDA &mdash;</div></div>
+        <div class="col build"><div class="pct">53%<span class="d">+5.2</span></div><div class="fill" style="height: 16.7cqw"></div><div class="lbl">&minus;10%</div></div>
+        <div class="col build"><div class="pct">59%<span class="d">+6.6</span></div><div class="fill" style="height: 18.8cqw"></div><div class="lbl">&minus;20%</div></div>
+        <div class="col gone build"><div class="pct">65%</div><div class="fill" style="height: 20.6cqw"></div><div class="lbl">&minus;27% &middot; liquidated</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · The risks the APY screenshots skip -->
+  <section class="slide lavender hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body">
+      <h2 class="slide-heading">What the APY screenshots <mark>skip</mark></h2>
+      <p class="slide-sub">The position pays to exist, trades around the clock, and is punished in size</p>
+      <div class="grid">
+        <div class="grid-card build">
+          <span class="tpl-icon" style="background-image: var(--i-interest)"></span>
+          <div class="name">Negative carry</div>
+          <div class="text">Interest joins the debt every day, so LTV creeps toward the line even when the price never moves</div>
+        </div>
+        <div class="grid-card build">
+          <span class="tpl-icon" style="background-image: var(--i-falls)"></span>
+          <div class="name">A 24/7 token on a 6&frac12;-hour stock</div>
+          <div class="text">Earnings land on a Friday night, and your LTV climbs all weekend while the real market is shut</div>
+        </div>
+        <div class="grid-card build">
+          <span class="tpl-icon" style="background-image: var(--i-liquidation)"></span>
+          <div class="name">The penalty is on the stack</div>
+          <div class="text">Liquidation charges the whole borrowed amount, and thin tokenized-stock liquidity makes a rushed exit expensive</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · The simulator -->
+  <section class="slide dark hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="body">
+      <h2 class="slide-heading">Loop it, then <mark>break</mark> it</h2>
+      <p class="slide-sub">Deposit $1,000 at 50% max LTV, loop, then move the price or let interest run. Liquidation past 65%: half the debt at a time, with a 5% bonus to the liquidator</p>
+      <div class="sim">
+        <div>
+          <label for="sim-loops">Loops <output id="o-loops">3</output>
+            <input type="range" id="sim-loops" min="0" max="10" value="3"></label>
+          <label for="sim-price">NVIDIA price <output id="o-price">+0%</output>
+            <input type="range" id="sim-price" min="-60" max="30" value="0"></label>
+          <div class="buttons">
+            <button id="sim-crash" type="button">Run a crash</button>
+            <button id="sim-month" type="button">+30 days of interest</button>
+            <button id="sim-liq" type="button" disabled>Liquidate</button>
+            <button id="sim-reset" type="button">Reset</button>
+          </div>
+          <p id="sim-note"></p>
+        </div>
+        <div>
+          <div class="readouts">
+            <div><div class="k">Exposure</div><div class="v" id="r-exp">&mdash;</div></div>
+            <div><div class="k">Debt</div><div class="v" id="r-debt">&mdash;</div></div>
+            <div><div class="k">Your equity</div><div class="v" id="r-eq">&mdash;</div></div>
+            <div><div class="k">LTV</div><div class="v" id="r-ltv">&mdash;</div></div>
+          </div>
+          <div class="status"><span class="tag green" id="r-status">Healthy</span></div>
+          <div class="vlbl">The position: your equity + borrowed USDC</div>
+          <div class="stackbar"><div class="segm equity" id="s-eq"></div><div class="segm debtseg" id="s-debt"></div></div>
+          <div class="gauge" id="gauge"><div class="fill" id="g-fill"></div><div class="mark65"></div><span class="glbl">Liquidation &middot; 65%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · Close -->
+  <section class="slide dark dotted hidden">
+    <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
+    <div class="statement">
+      <h2>Know your <mark>real</mark> exposure,<br>not your deposit</h2>
+      <p>Onchain, nobody calls you before they liquidate you.</p>
+    </div>
+  </section>
+
+</div>
+
+<div id="hint"><kbd>&rarr;</kbd> next &middot; <kbd>&larr;</kbd> back &middot; <kbd>F</kbd> full screen</div>
+
+<script>
+// One key press shows the next slide or builds its next element, as the
+// book's talks do. Left goes back one slide, fully built.
+(function () {
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  let current = 0;
+
+  // Park every build element of the slides not yet shown.
+  slides.forEach((slide, i) => {
+    if (i > 0) slide.querySelectorAll(".build").forEach((el) => el.classList.add("waiting"));
+  });
+
+  function show(i, built) {
+    slides.forEach((s, j) => s.classList.toggle("hidden", j !== i));
+    slides[i].querySelectorAll(".build").forEach((el) => el.classList.toggle("waiting", !built));
+    current = i;
+  }
+
+  function next() {
+    const waiting = slides[current].querySelector(".build.waiting");
+    if (waiting) { waiting.classList.remove("waiting"); return; }
+    if (current < slides.length - 1) show(current + 1, false);
+  }
+
+  function prev() {
+    if (current > 0) show(current - 1, true);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.matches("input, button")) return; // the simulator keeps its keys
+    if (["ArrowRight", " ", "PageDown", "Enter"].includes(e.key)) { e.preventDefault(); next(); }
+    else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === "Home") show(0, false);
+    else if (e.key === "End") show(slides.length - 1, true);
+    else if (e.key === "f" || e.key === "F") {
+      document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    }
+  });
+  document.getElementById("stage").addEventListener("click", (e) => {
+    if (e.target.closest(".sim")) return; // clicks inside the simulator don't advance
+    next();
+  });
+
+  const hint = document.getElementById("hint");
+  setTimeout(() => hint.classList.add("hidden"), 5000);
+})();
+
+// The simulator: deposit $1,000 at 50% max LTV, loop n times, move the
+// price, accrue interest, and run liquidations: past 65% LTV, half the debt
+// at a time, with a 5% bonus to the liquidator taken in collateral.
+(function () {
+  const MAX_LTV = 0.5, LIQ = 0.65, APR = 0.12, CLOSE = 0.5, BONUS = 0.05, DEPOSIT = 1000;
+  const $ = (id) => document.getElementById(id);
+  const loopsEl = $("sim-loops"), priceEl = $("sim-price");
+  // shares: the collateral valued at the starting price; debt: USDC owed.
+  let shares = 0, debt = 0, crashTimer = null;
+
+  function build() {
+    const n = +loopsEl.value;
+    shares = 0;
+    for (let k = 0; k <= n; k++) shares += DEPOSIT * Math.pow(MAX_LTV, k);
+    debt = shares - DEPOSIT;
+  }
+  const price = () => +priceEl.value / 100;
+  const fmt = (x) => (x < 0 ? "−$" : "$") + Math.abs(Math.round(x)).toLocaleString("en-US");
+  function note(t) { $("sim-note").textContent = t; }
+
+  function render() {
+    const p = price(), value = shares * (1 + p), equity = value - debt;
+    const ltv = debt > 0 && value > 0 ? debt / value : 0;
+    $("o-loops").textContent = loopsEl.value;
+    $("o-price").textContent = (p >= 0 ? "+" : "−") + Math.abs(Math.round(p * 100)) + "%";
+    $("r-exp").textContent = fmt(value);
+    $("r-debt").textContent = fmt(debt);
+    $("r-eq").textContent = fmt(equity);
+    $("r-ltv").textContent = debt <= 0 ? "0%" : (ltv * 100).toFixed(1) + "%";
+
+    const canLiq = debt > 0 && (ltv >= LIQ || equity <= 0);
+    $("sim-liq").disabled = !canLiq;
+    $("gauge").classList.toggle("hot", canLiq);
+    $("g-fill").style.width = (debt <= 0 ? 0 : Math.min(ltv / 0.75, 1) * 100) + "%";
+
+    const st = $("r-status");
+    if (debt <= 0) { st.className = "tag outline"; st.textContent = "No leverage — cannot be liquidated"; }
+    else if (equity <= 0) { st.className = "tag purple"; st.textContent = "Underwater"; }
+    else if (canLiq) { st.className = "tag purple"; st.textContent = "Liquidatable"; }
+    else if (ltv >= 0.55) { st.className = "tag outline"; st.textContent = "At risk"; }
+    else { st.className = "tag green"; st.textContent = "Healthy"; }
+
+    // The stacked bar: equity + debt = the collateral's value, on a fixed
+    // $2,600 scale so growth and shrinkage read as width.
+    const scale = 2600, eq = $("s-eq"), db = $("s-debt");
+    eq.style.width = Math.max(equity, 0) / scale * 100 + "%";
+    db.style.width = Math.min(debt, Math.max(value, 0)) / scale * 100 + "%";
+    eq.textContent = equity > 120 ? "Yours " + fmt(equity) : "";
+    db.textContent = debt > 120 ? "Owed " + fmt(debt) : "";
+  }
+
+  loopsEl.addEventListener("input", () => { stopCrash(); build(); note(""); render(); });
+  priceEl.addEventListener("input", () => { stopCrash(); note(""); render(); });
+  $("sim-reset").addEventListener("click", () => { stopCrash(); loopsEl.value = 3; priceEl.value = 0; build(); note(""); render(); });
+
+  $("sim-month").addEventListener("click", () => {
+    if (debt <= 0) { note("No debt, no interest. Loop first."); return; }
+    const added = debt * (APR * 30 / 365);
+    debt += added;
+    note("30 days passed: " + fmt(added) + " of interest joined the debt. The price never moved; your LTV rose anyway.");
+    render();
+  });
+
+  $("sim-liq").addEventListener("click", () => {
+    const p = price();
+    const repay = debt * CLOSE, seized = repay * (1 + BONUS);
+    debt -= repay;
+    shares -= seized / (1 + p);
+    note("A liquidator repaid " + fmt(repay) + " of your debt and took " + fmt(seized) +
+      " of your collateral. The " + fmt(repay * BONUS) + " bonus came out of your equity.");
+    render();
+  });
+
+  function stopCrash() { if (crashTimer) { clearInterval(crashTimer); crashTimer = null; } }
+  $("sim-crash").addEventListener("click", () => {
+    stopCrash();
+    if (debt <= 0) { note("With no debt a crash costs you the drop and nothing more. Loop first."); return; }
+    const atLiq = () => debt / (shares * (1 + price())) >= LIQ || +priceEl.value <= +priceEl.min;
+    const finish = () => note("The crash found your liquidation price at NVIDIA " + $("o-price").textContent + ". Press Liquidate.");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      while (!atLiq()) priceEl.value = +priceEl.value - 1;
+      render(); finish();
+      return;
+    }
+    crashTimer = setInterval(() => {
+      priceEl.value = +priceEl.value - 1;
+      render();
+      if (atLiq()) { stopCrash(); finish(); }
+    }, 60);
+  });
+
+  build();
+  render();
+})();
+</script>
+</body>
+</html>
