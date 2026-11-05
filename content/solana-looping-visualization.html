@@ -192,28 +192,27 @@ mark.purple { background: var(--purple); color: #fff; }
 
 /* ---- The LTV ladder ------------------------------------------------------ */
 
-.ladder { position: relative; display: flex; align-items: flex-end; gap: 3cqw; height: 26cqw; margin-top: 2.6cqw; padding-right: 16cqw; }
-.ladder .col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
-.ladder .pct { font: 1.6cqw var(--mono); color: #f0f0f0; margin-bottom: 0.6cqw; text-align: center; }
-.ladder .pct .d { font-size: 1.05cqw; color: #8d9196; margin-left: 0.6cqw; }
-.ladder .fill { background: var(--green); }
-.ladder .col.gone .fill { background: var(--purple); }
-.ladder .col.gone .pct { color: #b9a4ff; }
+/* Each price step is a pair of equity bars: the unlooped $1,000 (white)
+   beside the looped position's equity (green, purple once liquidatable),
+   on one dollar scale: $1,000 = 16.5cqw. */
+.legend { display: flex; gap: 2.8cqw; margin-top: 1.6cqw; font: 1cqw var(--mono); letter-spacing: 0.08cqw; color: #bdbdbd; }
+.legend .sw { display: inline-block; width: 1.1cqw; height: 1.1cqw; margin-right: 0.6cqw; vertical-align: -0.1cqw; }
+.legend .sw.spotc { background: var(--white); }
+.legend .sw.loopc { background: var(--green); }
+.ladder { display: flex; align-items: flex-end; gap: 4.5cqw; height: 23.5cqw; margin-top: 1.6cqw; padding-right: 4cqw; }
+.ladder .grp { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.ladder .pair { display: flex; gap: 0.8cqw; align-items: flex-end; }
+.ladder .b { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
+.ladder .amt { font: 1.05cqw var(--mono); color: #bdbdbd; margin-bottom: 0.5cqw; text-align: center; }
+.ladder .pct { font: 1.35cqw var(--mono); color: #f0f0f0; text-align: center; margin-bottom: 0.2cqw; }
+.ladder .pct .d { font-size: 0.95cqw; color: #8d9196; margin-left: 0.5cqw; }
+.ladder .fill.spot { background: var(--white); }
+.ladder .fill.loop { background: var(--green); }
+.ladder .grp.gone .fill.loop { background: var(--purple); }
+.ladder .grp.gone .pct { color: #b9a4ff; }
 .ladder .lbl {
   font: 0.95cqw var(--mono); letter-spacing: 0.08cqw; color: #8d9196; text-transform: uppercase;
   height: 1.4cqw; line-height: 1.4cqw; margin-top: 0.8cqw; text-align: center;
-}
-/* The liquidation line: 65 on the ladder's 0-75% scale, measured from the
-   bars' shared baseline above the 2.2cqw label row. Bar fills use the same
-   scale, as cqw heights: (LTV / 75) * 23.8cqw. */
-.liq-line {
-  position: absolute; left: 0; right: 16cqw;
-  bottom: calc(2.2cqw + 23.8cqw * 0.8667);
-  border-top: 0.18cqw dashed #777;
-}
-.liq-line .liq-lbl {
-  position: absolute; right: 0; top: -2.4cqw;
-  font: 1.05cqw var(--mono); letter-spacing: 0.1cqw; color: #bdbdbd; text-transform: uppercase;
 }
 
 /* ---- Risks: the grid of cards -------------------------------------------- */
@@ -368,13 +367,40 @@ mark.purple { background: var(--purple); color: #fff; }
     <header class="bar"><span class="mark"></span><span>Quicknode Solana Finance</span><span class="handle">Looping</span></header>
     <div class="body">
       <h2 class="slide-heading">Falling prices eat your margin at an <mark>accelerating</mark> rate</h2>
-      <p class="slide-sub">The debt stays $900. The collateral is NVIDIA. LTV = debt &divide; collateral, and it rises as the price falls</p>
+      <p class="slide-sub">Four NVIDIA shares at $250. Unlooped, a crash is a drawdown you can wait out. Looped, the debt stays $900, your equity falls nearly twice as fast, and LTV climbs to the 65% line</p>
+      <div class="legend">
+        <span><span class="sw spotc"></span>Unlooped: $1,000 of NVDAx, no debt</span>
+        <span><span class="sw loopc"></span>Looped: $1,900 against a $900 loan</span>
+      </div>
       <div class="ladder">
-        <div class="liq-line"><span class="liq-lbl">Liquidation &middot; 65%</span></div>
-        <div class="col build"><div class="pct">47%</div><div class="fill" style="height: 15cqw"></div><div class="lbl">NVDA &mdash;</div></div>
-        <div class="col build"><div class="pct">53%<span class="d">+5.2</span></div><div class="fill" style="height: 16.7cqw"></div><div class="lbl">&minus;10%</div></div>
-        <div class="col build"><div class="pct">59%<span class="d">+6.6</span></div><div class="fill" style="height: 18.8cqw"></div><div class="lbl">&minus;20%</div></div>
-        <div class="col gone build"><div class="pct">65%</div><div class="fill" style="height: 20.6cqw"></div><div class="lbl">&minus;27% &middot; liquidated</div></div>
+        <div class="grp build">
+          <div class="pair">
+            <div class="b"><div class="amt">$1,000</div><div class="fill spot" style="height: 16.5cqw"></div></div>
+            <div class="b"><div class="pct">LTV 47%</div><div class="amt">$1,000</div><div class="fill loop" style="height: 16.5cqw"></div></div>
+          </div>
+          <div class="lbl">NVDA $250</div>
+        </div>
+        <div class="grp build">
+          <div class="pair">
+            <div class="b"><div class="amt">$900</div><div class="fill spot" style="height: 14.9cqw"></div></div>
+            <div class="b"><div class="pct">53%<span class="d">+5.2</span></div><div class="amt">$810</div><div class="fill loop" style="height: 13.4cqw"></div></div>
+          </div>
+          <div class="lbl">$225 &middot; &minus;10%</div>
+        </div>
+        <div class="grp build">
+          <div class="pair">
+            <div class="b"><div class="amt">$800</div><div class="fill spot" style="height: 13.2cqw"></div></div>
+            <div class="b"><div class="pct">59%<span class="d">+6.6</span></div><div class="amt">$620</div><div class="fill loop" style="height: 10.2cqw"></div></div>
+          </div>
+          <div class="lbl">$200 &middot; &minus;20%</div>
+        </div>
+        <div class="grp gone build">
+          <div class="pair">
+            <div class="b"><div class="amt">$730</div><div class="fill spot" style="height: 12cqw"></div></div>
+            <div class="b"><div class="pct">65%</div><div class="amt">$487</div><div class="fill loop" style="height: 8cqw"></div></div>
+          </div>
+          <div class="lbl">$182 &middot; &minus;27% &middot; liquidated</div>
+        </div>
       </div>
     </div>
   </section>
@@ -415,7 +441,7 @@ mark.purple { background: var(--purple); color: #fff; }
         <div>
           <label for="sim-loops">Loops <output id="o-loops">3</output>
             <input type="range" id="sim-loops" min="0" max="10" value="3"></label>
-          <label for="sim-price">NVIDIA price <output id="o-price">+0%</output>
+          <label for="sim-price">NVIDIA price <output id="o-price">$250 &middot; +0%</output>
             <input type="range" id="sim-price" min="-60" max="30" value="0"></label>
           <div class="buttons">
             <button id="sim-crash" type="button">Run a crash</button>
@@ -525,7 +551,8 @@ mark.purple { background: var(--purple); color: #fff; }
     const p = price(), value = shares * (1 + p), equity = value - debt;
     const ltv = debt > 0 && value > 0 ? debt / value : 0;
     $("o-loops").textContent = loopsEl.value;
-    $("o-price").textContent = (p >= 0 ? "+" : "−") + Math.abs(Math.round(p * 100)) + "%";
+    $("o-price").textContent = "$" + Math.round(250 * (1 + p)) +
+      " · " + (p >= 0 ? "+" : "−") + Math.abs(Math.round(p * 100)) + "%";
     $("r-exp").textContent = fmt(value);
     $("r-debt").textContent = fmt(debt);
     $("r-eq").textContent = fmt(equity);
