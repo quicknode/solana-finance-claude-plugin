@@ -23,7 +23,7 @@ Rules for explaining a Solana program clearly and truthfully - in a README, a wa
 - **Only reference tokens that actually exist** - verify before naming one.
 - **Prefer well-known real-world assets** the audience already understands, and gloss each on first use: **USDC** (US dollars), **NVDAx** (NVIDIA stock), **SPCXx** (SpaceX stock).
 - **No memecoins**, and **avoid SOL** wherever possible - its price is meaningless to most people, whereas a dollar or a familiar stock is not.
-- **Numbers are real and current, or clearly hypothetical.** Cite a price you state (real token, today's value, with a source); label any invented or future figure as illustrative. Keep token math concrete with base units and a worked example ("100 SPCXx at \$170 = \$17,000 collateral; 75% LTV ⇒ borrow up to \$12,750").
+- **Numbers are real and current, or clearly hypothetical.** Cite a price you state (real token, today's value, with a source); label any invented or future figure as illustrative. Keep token math concrete with an example ("100 SPCXx at \$170 = \$17,000 collateral; 75% LTV ⇒ borrow up to \$12,750").
 
 ## Ensure math is correct
 
