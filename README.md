@@ -2,6 +2,10 @@
 
 ![Quicknode Solana Finance Claude Skill](assets/banner.png)
 
+<!-- yarkr:badges:start -->
+[![Indexed on Yarkr](https://api.yarkr.com/functions/v1/api/api/v1/badges/repos/quicknode/solana-finance-claude-plugin/version.svg)](https://yarkr.com/arks/quicknode/solana-finance-claude-plugin)
+<!-- yarkr:badges:end -->
+
 Develop financial products as Solana Programs in Anchor 1, 2 or Quasar. The companion plugin to the book [*Building Financial Software on Solana*](https://solanabook.org), with a focus on:
 
 - Accuracy, consistency and security for financial software
@@ -37,6 +41,38 @@ npx skills@1.7.0 add https://github.com/quicknode/solana-finance-claude-plugin
 ```
 
 This installs the skill into the current project's `.claude/skills/` directory. Add `-g` to install it for every project, under `~/.claude/skills/`, and `--agent claude-code` if the CLI detects other agents you do not want it installed for.
+
+<!-- yarkr:install:start -->
+## Install with Yarkr
+
+This repo is indexed on [Yarkr](https://yarkr.com/arks/quicknode/solana-finance-claude-plugin) as the ark [quicknode/solana-finance-claude-plugin](https://yarkr.com/arks/quicknode/solana-finance-claude-plugin), so its skills install into Claude Code, Codex, Cursor and other agent harnesses with one command.
+
+### CLI
+
+Install the whole ark, which Yarkr keeps equal to this repo:
+
+```bash
+npx yarkr-cli sync quicknode/solana-finance-claude-plugin
+```
+
+Or add individual skills:
+
+```bash
+npx yarkr-cli add skill:quicknode/solana-finance-claude-plugin/solana
+```
+
+No Node.js? `curl -fsSL https://yarkr.com/install.sh | sh` (macOS, Linux) or `irm https://yarkr.com/install.ps1 | iex` (Windows PowerShell) installs `yarkr` as a standalone binary; then type `yarkr` in place of `npx yarkr-cli`.
+
+### MCP
+
+Connect your agent to the ark over MCP:
+
+```bash
+npx yarkr-cli mcp add quicknode/solana-finance-claude-plugin
+```
+
+Or point any MCP client at `https://api.yarkr.com/functions/v1/api/mcp/o/quicknode/solana-finance-claude-plugin`.
+<!-- yarkr:install:end -->
 
 ## Usage
 
